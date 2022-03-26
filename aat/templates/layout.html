@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type=text/css href="{{ url_for('static', filename='style.css')}}">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+        <title>AAT</title>
+    </head>
+    <body>
+        <div class="wrapper">
+            <nav class="navbar">
+                <div class="logo">
+                    <img alt="cardiff logo" src="{{ url_for('static', filename='img/cardiff.jpg') }}">
+                </div>
+                <div class="personalinfo">
+                    <h3>Name</h3>
+                    <p>ID</p>
+                </div>
+                <div class="menu">
+                    <div>
+                        <img src="{{ url_for('static', filename='img/activity.png') }}">
+                        <a href="{{ url_for('activitystream') }}">Activity Stream</a>
+                    </div>
+                    <div>
+                        <img src="{{ url_for('static', filename='img/course.png') }}">
+                        <a href="{{ url_for('course') }}">Course</a>
+                    </div>
+                    <div class="assessment">
+                        <img src="{{ url_for('static', filename='img/assessment.png') }}">
+                        <a href="{{ url_for('assessment') }}">Assessment</a>
+                    </div>
+                    <div>
+                        <img src="{{ url_for('static', filename='img/feedback.png') }}">
+                        <a href="{{ url_for('feedback') }}">Feedback</a>
+                    </div>
+                    
+                </div>
+                <div class="loginout">
+                    <img src="{{ url_for('static', filename='img/logout.png') }}">
+                    <a href="{{ url_for('logout') }}">Log Out</a>
+                </div>
+            </nav>
+            <div class="pagecontent">
+                <header><h1>{% block header %}{% endblock %}</h1></header>
+                <div class="content">{% block content %}{% endblock %}</div>
+            </div>
+        </div>
+    </body>
+</html>
+
