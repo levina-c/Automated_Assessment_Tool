@@ -1,12 +1,33 @@
-from flask import render_template, flash, redirect, session, url_for, request, jsonify
-from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.urls import url_parse
-from blog import app
-# from blog.forms import LoginForm, RegistrationForm, CommentForm, SortPosts
-# from blog.models import User, Post, Comment, Reviews
-from sqlalchemy import desc, asc
+from flask import render_template
+from aat import app
 
-@app.route('/', methods = ['GET', 'POST'])
-@app.route('/index', methods = ['GET', 'POST'])
-def index():
-    return render_template('index.html')
+# @app.route("/")
+# @app.route("/index")
+# def index():
+#     return render_template("index.html")
+
+@app.route("/")
+@app.route("/index")
+@app.route("/activitystream")
+def activitystream():
+    return render_template("activitystream.html")
+
+@app.route("/course")
+def course():
+    return render_template("course.html")
+
+@app.route("/assessment")
+def assessment():
+    return render_template("assessment.html")
+
+@app.route("/add_assessment")
+def add_assessment():
+    return render_template("add_assessment.html")
+
+@app.route("/feedback")
+def feedback():
+    return render_template("feedback.html") 
+
+@app.route("/logout")
+def logout():
+    return render_template("index.html")
