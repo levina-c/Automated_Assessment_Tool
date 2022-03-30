@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+{% block header %}<h1>Hello</h1>{% endblock %}
+{% block scripts %}
+{{ super() }}
+{{ datepicker.loader() }}
+{{ datepicker.picker(id='.dp') }}
+{% block content %}
+    <form class="form">
+        <input type='text' class='form control dp' />
+    </form>
+{% endblock %}
