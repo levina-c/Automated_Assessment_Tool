@@ -2,13 +2,36 @@ from datetime import datetime
 from aat import db
 
 class Courses(db.Model):
-    # id = db.Column(db.Integer, primary_key=True)
-    courseCode = db.Column(db.String(7), nullable=False, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
+    courseCode = db.Column(db.String(7), unique=True, nullable=False)
     courseName = db.Column(db.Text, nullable=False)
-    assessment = db.relationship('Assessments', backref='courses', lazy='dynamic')
-    type1Qs = db.relationship('Type1Questions', backref='courses', lazy='dynamic')
-    type2Qs = db.relationship('Type2Questions', backref='courses', lazy='dynamic')
+    assessment = db.relationship('Assessments', backref='courses', lazy=True)
+    type1Qs = db.relationship('Type1Questions', backref='courses', lazy=True)
+    type2Qs = db.relationship('Type2Questions', backref='courses', lazy=True)
 
+class Type1Questions(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course_code = db.Column(db.String(7), db.ForeignKey('courses.courseCode'), nullable=False)
+    assessment_id = db.Column(db.Integer, db.ForeignKey('assessments.id'), nullable=True)
+    title = db.Column(db.Text, nullable=False)
+    optionA = db.Column(db.Text, nullable=False)
+    optionB = db.Column(db.Text, nullable=False)
+    optionC = db.Column(db.Text, nullable=False)
+    optionD = db.Column(db.Text, nullable=True)
+    correct_answer = db.Column(db.String(1), nullable=False)
+    tags = db.Column(db.PickleType, nullable=True)
+    explanation = db.Column(db.Text, nullable=True)
+    difficulty = db.Column(db.String(15), nullable=False)
+    utilised = db.Column(db.Boolean, nullable=False, default=False)
+class Type2Questions(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
+    assessment_id = db.Column(db.Integer, db.ForeignKey('assessments.id'), nullable=True)
+    title = db.Column(db.Text, nullable=False)
+    correct_answer = db.Column(db.String(5), nullable=False)
+    explanation = db.Column(db.Text, nullable=True)
+    difficulty = db.Column(db.String(15), nullable=False)
+    utilised = db.Column(db.Boolean, nullable=False, default=False)
 class Assessments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
@@ -18,33 +41,8 @@ class Assessments(db.Model):
     dueDateTime = db.Column(db.DateTime, nullable=True)
     timeLimit = db.Column(db.Integer, nullable=True)
     totalMark = db.Column(db.Integer, nullable=False, default=100)
-    assessmentQs = db.relationship('AssessmentQuestions', backref='assessments', lazy='dynamic')
+    assessmentT1Qs = db.relationship('Type1Questions', backref='assessments', lazy=True)
+    assessmentT2Qs = db.relationship('Type2Questions', backref='assessments', lazy=True)
 
-class AssessmentQuestions(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    assessment_id = db.Column(db.Integer, db.ForeignKey('assessments.id'), nullable=False)
-    questionT1_id = db.Column(db.Integer, db.ForeignKey('type1questions.id'), nullable=True)
-    questionT2_id = db.Column(db.Integer, db.ForeignKey('type2questions.id'), nullable=True)
-class Type1Questions(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    optA = db.Column(db.Text, nullable=False)
-    optB = db.Column(db.Text, nullable=False)
-    optC = db.Column(db.Text, nullable=False)
-    optD = db.Column(db.Text, nullable=True)
-    answer = db.Column(db.String(1), nullable=False)
-    explanation = db.Column(db.Text, nullable=True)
-    difficulty = db.Column(db.String(15), nullable=False)
-    used = db.Column(db.Boolean, nullable=False, default=False)
-    assessmentQ = db.relationship('AssessmentQuestions', backref='type1questions', lazy='dynamic')
-    
-class Type2Questions(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    answer = db.Column(db.String(5), nullable=False)
-    explanation = db.Column(db.Text, nullable=True)
-    difficulty = db.Column(db.String(15), nullable=False)
-    used = db.Column(db.Boolean, nullable=False, default=False)
-    assessmentQ = db.relationship('AssessmentQuestions', backref='type2questions', lazy='dynamic')
+    def __repr__(self):
+        return f"Assessment('{self.course_code}',''{self.ATitle}','{self.AType}','{self.dueDate}','{self.dueDateTime}')"
