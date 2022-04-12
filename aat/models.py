@@ -8,7 +8,6 @@ class Courses(db.Model):
     assessment = db.relationship('Assessments', backref='courses', lazy=True)
     type1Qs = db.relationship('Type1Questions', backref='courses', lazy=True)
     type2Qs = db.relationship('Type2Questions', backref='courses', lazy=True)
-
 class Type1Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String(7), db.ForeignKey('courses.courseCode'), nullable=False)
