@@ -106,3 +106,8 @@
 a {
     text-decoration: none;
 }
+
+hr{
+    color: black;
+    width: 50%;
+}
