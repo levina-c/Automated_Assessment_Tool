@@ -42,6 +42,14 @@ class Assessments(db.Model):
     totalMark = db.Column(db.Integer, nullable=False, default=100)
     assessmentT1Qs = db.relationship('Type1Questions', backref='assessments', lazy=True)
     assessmentT2Qs = db.relationship('Type2Questions', backref='assessments', lazy=True)
+    comments = db.relationship('Comments', backref = 'assessments', lazy=True)
 
     def __repr__(self):
         return f"Assessment('{self.course_code}',''{self.ATitle}','{self.AType}','{self.dueDate}','{self.dueDateTime}')"
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    assessment_id = db.Column(db.Integer, db.ForeignKey('assessments.id'), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    submissiontime = db.Column(db.DateTime, nullable=False, default = datetime.now())
+    rating = db.Column(db.Integer, nullable=False)

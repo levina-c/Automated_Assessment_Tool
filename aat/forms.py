@@ -16,7 +16,7 @@ class AssessmentForm(FlaskForm):
     savenexit = SubmitField('Save and Exit')
     nextpage = SubmitField('Next')
 
-    def validate_coursename(self, coursename):
+    def validate_course(self, course):
         if course != 'Select Course':
             raise ValidationError('Please select a course')
     

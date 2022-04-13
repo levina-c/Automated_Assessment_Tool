@@ -1,5 +1,5 @@
 from aat import db
-from aat.models import Courses, Assessments, Type1Questions, Type2Questions
+from aat.models import Courses, Assessments, Type1Questions, Type2Questions, Comments
 import datetime
 
 db.drop_all()
@@ -67,6 +67,12 @@ t2q1 = Type2Questions(
     difficulty = 'Easy',
     utilised = False )
 
+comment1 = Comments(
+    assessment_id = 1,
+    content = 'Good',
+    rating = 7
+)
+
 db.session.add(course1)
 db.session.add(course2)
 db.session.add(course3)
@@ -76,5 +82,6 @@ db.session.add(t1q2)
 db.session.add(t1q3)
 db.session.add(t1q4)
 db.session.add(t2q1)
+db.session.add(comment1)
 
 db.session.commit()

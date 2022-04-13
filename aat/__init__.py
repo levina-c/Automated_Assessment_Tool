@@ -13,7 +13,6 @@ finalpath = os.path.join(basedir, dbName)
 destination = f"sqlite:///{finalpath}"
 
 
-
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['SECRET_KEY'] = '14a426c86b032eaa8f9eea231b7aa7c5ee72675114484cf54fea0c0ed2e16363eb402f2852855f1e5d830a7a5b06ee5b'
