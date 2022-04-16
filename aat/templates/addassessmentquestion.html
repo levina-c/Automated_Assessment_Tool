@@ -1,5 +1,80 @@
 {% extends 'layout.html' %}
 {% block header %}<h1>Add Questions</h1>{% endblock %}
 {% block content %}
-
+    <div class="currentAssessmentInfo">
+        <h5>Course: {{ assessment.course_code }}</h5>
+        <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
+        <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
+        <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
+        <h5>Time Limit: {{ assessment.timelimit }}</h5>
+        <h5>Total Mark: {{ assessment.totalmark }}</h5>
+    </div>
+    <hr>
+    <div class="sortQuestions">
+        <form method="POST" action="">
+            {{ sortselection.csrf_token }}
+            {{ searchform.csrf_token }}
+            <p>{{ sortselection.qType }} {{ sortselection.submit }}</p>
+            <p>{{ searchform.searchbar }} {{ searchform.submit }}</p>
+        </form>
+    </div>
+    <table class="questionpool">
+        <tr>
+        </tr>
+        <td>
+            <table class='question'>
+                <th>Questions</th>
+                <form method="POST" action="">
+                    <tr>
+                        <td>
+                            {% for a in questions %}
+                            <p>{{a.id}} {{ a.title }}<input type="checkbox" name="CQ">
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <!-- {{ chooseQs.csrf_token }}
+                    <tr>
+                        <td>{{ chooseQs.opts }} {{ chooseQs.submit }}</td>
+                    </tr> -->
+                </form>
+            </table>
+        </td>
+        <td class='difficultynused'>
+            <table>
+                <th>Difficulty</th>
+                <th>Used</th>
+                {% for q in filteredquestion %}
+                <tr>
+                    <td>{{ q.difficulty }}</td>
+                    <td>{{ q.utilised }}</td>
+                </tr>
+                    {% endfor %}
+            </table>
+        </td>
+    </table>
+    <div class='addquestionbtn'>
+        <input type="submit" value="Add"></p>
+        <!-- <input type="submit" name="add_q_btn" value="Add Question(s)"> -->
+        <input type="submit" name="add_q_btn" value="Add Question(s) and Preview">
+    </div>
+    {% if selected == 'Type1' %}
+        <form method="POST" action="">
+            {{ form.csrf_token }}
+            {{ form.t1opts }}
+            <input type="submit">
+        </form>
+    {% elif selected == 'Type2' %}
+        <form method="POST" action="">
+            {{ form.csrf_token }}
+            {{ form.t2opts }}
+            <input type="submit">
+        </form>
+    {% else %}
+        <form method="POST" action="">
+            {{ form.csrf_token }}
+            {{ form.t1opts }}
+            {{ form.t2opts }}
+            <input type="submit">
+        </form>
+    {% endif %}
 {% endblock %}
