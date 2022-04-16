@@ -12,10 +12,9 @@
     <hr>
     <div class="sortQuestions">
         <form method="POST" action="">
-            {{ sortselection.csrf_token }}
-            {{ searchform.csrf_token }}
-            <p>{{ sortselection.qType }} {{ sortselection.submit }}</p>
-            <p>{{ searchform.searchbar }} {{ searchform.submit }}</p>
+            {{ filterform.csrf_token }}
+            <p>{{ filterform.qType }} {{ filterform.searchbar }}</p>
+            <input type="submit" value="Filter">
         </form>
     </div>
     <table class="questionpool">
@@ -24,19 +23,39 @@
         <td>
             <table class='question'>
                 <th>Questions</th>
-                <form method="POST" action="">
-                    <tr>
-                        <td>
-                            {% for a in questions %}
-                            <p>{{a.id}} {{ a.title }}<input type="checkbox" name="CQ">
+                <tr>
+                    <td>
+                        {% if selected == 'Type1' %}
+                            <form method="POST" action="">
+                                {{ form.csrf_token }}
+                                {{ form.t1opts }}
+                                <input type="submit">
+                            </form>
+                        {% elif selected == 'Type2' %}
+                            <form method="POST" action="">
+                                {{ form.csrf_token }}
+                                {{ form.t2opts }}
+                                <input type="submit">
+                            </form>
+                        {% elif selected == 'All' %}
+                            <form method="POST" action="">
+                                {{ form.csrf_token }}
+                                <h5>Multiple Choice</h5>
+                                {{ form.t1opts }}
+                                <h5>True/False</h5>
+                                {{ form.t2opts }}
+                                <input type="submit">
+                            </form>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if selected == 'Type1' %}
+                            {% for q in questions %}
+                                {{ q.difficulty }}
                             {% endfor %}
-                        </td>
-                    </tr>
-                    <!-- {{ chooseQs.csrf_token }}
-                    <tr>
-                        <td>{{ chooseQs.opts }} {{ chooseQs.submit }}</td>
-                    </tr> -->
-                </form>
+                        {% endif %}
+                    </td>
+                </tr>
             </table>
         </td>
         <td class='difficultynused'>
@@ -52,29 +71,4 @@
             </table>
         </td>
     </table>
-    <div class='addquestionbtn'>
-        <input type="submit" value="Add"></p>
-        <!-- <input type="submit" name="add_q_btn" value="Add Question(s)"> -->
-        <input type="submit" name="add_q_btn" value="Add Question(s) and Preview">
-    </div>
-    {% if selected == 'Type1' %}
-        <form method="POST" action="">
-            {{ form.csrf_token }}
-            {{ form.t1opts }}
-            <input type="submit">
-        </form>
-    {% elif selected == 'Type2' %}
-        <form method="POST" action="">
-            {{ form.csrf_token }}
-            {{ form.t2opts }}
-            <input type="submit">
-        </form>
-    {% else %}
-        <form method="POST" action="">
-            {{ form.csrf_token }}
-            {{ form.t1opts }}
-            {{ form.t2opts }}
-            <input type="submit">
-        </form>
-    {% endif %}
 {% endblock %}

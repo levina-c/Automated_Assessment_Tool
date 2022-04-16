@@ -1,6 +1,6 @@
 from flask import *
 from aat import app, db
-from aat.forms import AssessmentForm, sortQuestionsByType, chooseQuestions, searchKeywords, chooseQuestions2
+from aat.forms import AssessmentForm, sortQuestionsByType, chooseQuestions, searchKeywords, chooseQuestions2, filterquestionform, t1_query, t2_query
 from aat.models import Courses, Assessments, Type1Questions, Type2Questions
 import datetime
 from sqlalchemy import desc, asc
@@ -51,20 +51,20 @@ def t2question_query(coursecode):
 @app.route("/addassessmentquestion/<int:currentAssessmentID>", methods=['GET','POST'])
 def addassessmentquestion(currentAssessmentID):
     assessment=Assessments.query.get_or_404(currentAssessmentID)
-    questions = Type1Questions.query.all()
-    sortselection = sortQuestionsByType(qType='All')
-    selected = sortselection.qType.data
-    chooseQs = chooseQuestions()
-    searchform = searchKeywords()
-    keyword = searchform.searchbar.data
+    questions = Type1Questions.query.filter_by(course_code='CMT220').all()
+    filterinfo = filterquestionform(qType='All')
+    selected = filterinfo.qType.data
+    usedstatus = filterinfo.used.data
+    keyword = filterinfo.searchbar.data
     filteredquestion = []
     print(keyword)
+    # T1difficulty = Type1Questions.query.filter_by(course)
     # if sortselection.validate_on_submit():
     #     if selected == 'Type1':
     #         questions = t1question_query(assessment.course_code)
     #         if keyword != '':
     #             questions = Type1Questions.query.filter_by(course_code = assessment.course_code, tags=keyword).all()
-    #     else:
+    #     elif selected == ''
     #         questions = t2question_query(assessment.course_code)
     #         if keyword != '':
     #             questions = Type2Questions.query.filter_by(course_code = assessment.course_code, tags=keyword).all()
@@ -86,11 +86,17 @@ def addassessmentquestion(currentAssessmentID):
     #     print(request.form.getlist("CQ"))
 
     form = chooseQuestions2()
+    filterform = filterquestionform()
+
+
+    # if filterform.validate_on_submit():
+    #     if filterform.qType.data == 'All':
+
 
     if form.validate_on_submit():
         print(f'chosen: {form.t1opts.data}')
 
-    return render_template("addassessmentquestion.html", assessment=assessment, sortselection=sortselection, questions=questions, selected=selected, chooseQs=chooseQs, filteredquestion=filteredquestion, searchform=searchform, form=form)
+    return render_template("addassessmentquestion.html", assessment=assessment, filterinfo=filterinfo, questions=questions, selected=selected, usedstatus = usedstatus, filterform=filterform,form=form)
 
 @app.route("/previewassessment", methods=['GET','POST'])
 def previewassessment():

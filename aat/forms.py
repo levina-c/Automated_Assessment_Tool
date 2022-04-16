@@ -7,6 +7,7 @@ from wtforms.fields import DateField
 from flask_sqlalchemy import SQLAlchemy
 from wtforms_sqlalchemy.fields import QuerySelectMultipleField
 from aat.models import Type1Questions, Type2Questions
+from sqlalchemy.sql.expression import and_
 
 class AssessmentForm(FlaskForm):
     course = SelectField('Course', validators=[InputRequired()], choices=[
@@ -50,10 +51,15 @@ class QueryMultipleCheckboxField(QuerySelectMultipleField):
     option_widget = widgets.CheckboxInput()
 
 def t1_query():
-    return Type1Questions.query
+    return Type1Questions.query.filter_by(course_code = 'CMT220').all()
 
 def t2_query():
-    return Type2Questions.query
+    return Type2Questions.query.filter_by(course_code = 'CMT220').all()
+
+class filterquestionform(FlaskForm):
+    qType = SelectField('Question Type', validators=[InputRequired()], choices=[('All', 'All'),('Type1', 'Multiple Choice'), ('Type2', 'True/False')])
+    used = SelectField('Question Type', validators=[InputRequired()], choices=[('All', 'All'),('Used', 'Used'), ('Unused', 'Unused')])
+    searchbar = SearchField(label='Enter Keyword')
 class chooseQuestions2(FlaskForm):
     t1opts = QueryMultipleCheckboxField(query_factory=t1_query)
     t2opts = QueryMultipleCheckboxField(query_factory=t2_query)

@@ -22,6 +22,9 @@ class Type1Questions(db.Model):
     explanation = db.Column(db.Text, nullable=True)
     difficulty = db.Column(db.String(15), nullable=False)
     utilised = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __repr__(self):
+        return f'{self.title}'
 class Type2Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
@@ -32,6 +35,9 @@ class Type2Questions(db.Model):
     explanation = db.Column(db.Text, nullable=True)
     difficulty = db.Column(db.String(15), nullable=False)
     utilised = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __repr__(self):
+        return f'{self.title}'
 class Assessments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
