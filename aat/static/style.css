@@ -137,7 +137,7 @@ hr{
     align-items: center;
 }
 
-.create_assessment {
+.assessment_page_btn {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -198,6 +198,12 @@ table {
     width:90%;
 }
 
+.deleteq_button{
+    display: flex;
+    align-self: flex-end;
+    padding-bottom: 20px;
+}
+
 .currentAssessmentInfo_addq,
 .currentAssessmentInfo_preview {
     display: flex;
@@ -231,6 +237,13 @@ table {
     justify-content: flex-end;
 }
 
+/* add assessment page */
+.new_assessment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+}
 
 /* Add assessment question page */
 .addquestionbox {
@@ -240,12 +253,6 @@ table {
     align-items: center;
 }
 
-/* .currentAssessmentInfo_addq {
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-    margin: auto;
-} */
 
 .sortQuestions{
     align-self:center;

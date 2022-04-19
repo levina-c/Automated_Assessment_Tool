@@ -19,20 +19,18 @@
     <!-- </div> -->
     <hr>
     <div class="showquestions">
+        {{ delete_question.csrf_token }}
         <form method='POST' action=''>
-            <ol>
-                {% for q in assessmentT1Qs %}
-                <li>
-                    <p>{{ q.title }} <input type="submit" name='del' value='delete'></p>
-                </li>
-                {% endfor %}
-                {% for q in assessmentT2Qs %}
-                <li>
-                    <p>{{ q.title }} <input type="submit" name='del' value='delete'></p>
-                </li>
-                {% endfor %}
-            </ol>
+            <div class="question_in_assessment">
+                <p>{{ delete_question.t1opts }}</p>
+                <p>{{ delete_question.t2opts }}</p>
+            </div>
         </form>
+        <div class="deleteq_button">
+            <form method='POST' action=''> 
+                <input type="submit" name='del' value='Delete Questions'>
+            </form>
+        </div>
     </div>
     <div class="addquestions_edit">
         <button type="button" onclick="window.location.href='{{ url_for('addassessmentquestion', currentAssessmentID=assessmentID) }}';"> Add questions </button>

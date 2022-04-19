@@ -1,6 +1,6 @@
 from flask import *
 from aat import app, db
-from aat.forms import AssessmentForm, filterquestionform, chooseQuestions
+from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions
 from aat.models import Courses, Assessments, Type1Questions, Type2Questions
 import datetime
 from sqlalchemy import desc, asc
@@ -29,11 +29,11 @@ def assessment():
 def indiassessment(assessmentID):
     # access specific assessment
     assessment=Assessments.query.get_or_404(assessmentID)
-    assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = assessmentID).with_entities(Type1Questions.title, Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
-    assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = assessmentID).with_entities(Type2Questions.title)
-    allassessmentQs = assessmentT1Qs.union(assessmentT2Qs)
+    assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = assessmentID).all()
+    assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = assessmentID).all()
     assessmentT1As = Type1Questions.query.filter_by(assessment_id = assessmentID).with_entities(Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
-    # edit assessment form
+
+# edit assessment form
     edit_assessment = AssessmentForm(
         course = assessment.course_code,
         assessmenttitle = assessment.assessmenttitle,
@@ -42,8 +42,11 @@ def indiassessment(assessmentID):
         duedatetime = datetime.datetime.strptime(assessment.duedatetime,"%H:%M"),
         timelimit = assessment.timelimit,
         totalmark = assessment.totalmark)
+        
     edit_question = chooseQuestions()
+    delete_question = deleteQuestions()
 
+# edit assessment details
     if edit_assessment.validate_on_submit:
         try: 
             assessment.course_code = edit_assessment.course.data
@@ -80,11 +83,24 @@ def indiassessment(assessmentID):
     elif request.form.get('del') == 'Preview':
         return redirect(url_for('previewassessment', currentAssessmentID=assessmentID))
 
-    # elif request.form.get('del') == 'delete':
-    #     q_todelete = assessment.assessmentT1Qs.filter_by()
-    #     Type1Questions.utilised = False
-    #     db.session.commit()
-    return render_template("indiassessment.html", assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, allassessmentQs=allassessmentQs, edit_assessment=edit_assessment, edit_question=edit_question, assessmentID=assessmentID)
+# delete questions
+    delete_question.t1opts.choices = [(q.id, q.title) for q in assessmentT1Qs]
+    delete_question.t2opts.choices = [(q.id, q.title) for q in assessmentT2Qs]
+
+
+    if request.form.get('del') == 'Delete Questions':
+        for qID in delete_question.t1opts.data:
+            T1Qs_todel = Type1Questions.query.get_or_404(qID)
+            T1Qs_todel.assessment_id = None
+            T1Qs_todel.utilised = False
+        for qID in delete_question.t2opts.data:
+            T1Qs_todel = Type2Questions.query.get_or_404(qID)
+            T1Qs_todel.assessment_id = None
+            T1Qs_todel.utilised = False
+        db.session.commit()
+        flash("Questions have been deleted")
+        
+    return render_template("indiassessment.html", assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, edit_assessment=edit_assessment, edit_question=edit_question, assessmentID=assessmentID, delete_question=delete_question)
 
 @app.route("/addassessment", methods=['GET','POST'])
 def addassessment():
@@ -286,8 +302,10 @@ def previewassessment(currentAssessmentID):
     assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.title)
     allassessmentQs = assessmentT1Qs.union(assessmentT2Qs)
     assessmentT1As = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
-    if request.form.get("preview") == 'Back':
+    if request.form.get("preview") == 'Add Questions':
         return redirect(url_for('addassessmentquestion', currentAssessmentID=currentAssessmentID))
+    elif request.form.get("preview") == 'Back':
+        return redirect(url_for('indiassessment', assessmentID=assessment.id))
     elif request.form.get("preview") == 'Publish':
         assessment.status = "Published"
         db.session.commit()
