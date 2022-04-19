@@ -1,7 +1,8 @@
 {% extends 'layout.html' %}
 {% block header %}<h1>Add Questions</h1>{% endblock %}
 {% block content %}
-    <div class="currentAssessmentInfo">
+<div class="addquestionbox">
+    <div class="currentAssessmentInfo_addq">
         <h5>Course: {{ assessment.course_code }}</h5>
         <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
         <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
@@ -13,62 +14,39 @@
     <div class="sortQuestions">
         <form method="POST" action="">
             {{ filterform.csrf_token }}
-            <p>{{ filterform.qType }} {{ filterform.searchbar }}</p>
-            <input type="submit" value="Filter">
+            <p>{{ filterform.qType }} {{ filterform.searchbar }} {{ filterform.used }} {{ filterform.difficulty }}
+                <input type="submit" name="add_question" value="Filter"></p>
         </form>
     </div>
-    <table class="questionpool">
-        <tr>
-        </tr>
-        <td>
-            <table class='question'>
-                <th>Questions</th>
-                <tr>
-                    <td>
-                        {% if selected == 'Type1' %}
-                            <form method="POST" action="">
-                                {{ form.csrf_token }}
-                                {{ form.t1opts }}
-                                <input type="submit">
-                            </form>
-                        {% elif selected == 'Type2' %}
-                            <form method="POST" action="">
-                                {{ form.csrf_token }}
-                                {{ form.t2opts }}
-                                <input type="submit">
-                            </form>
-                        {% elif selected == 'All' %}
-                            <form method="POST" action="">
-                                {{ form.csrf_token }}
-                                <h5>Multiple Choice</h5>
-                                {{ form.t1opts }}
-                                <h5>True/False</h5>
-                                {{ form.t2opts }}
-                                <input type="submit">
-                            </form>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if selected == 'Type1' %}
-                            {% for q in questions %}
-                                {{ q.difficulty }}
-                            {% endfor %}
-                        {% endif %}
-                    </td>
-                </tr>
-            </table>
-        </td>
-        <td class='difficultynused'>
-            <table>
-                <th>Difficulty</th>
-                <th>Used</th>
-                {% for q in filteredquestion %}
-                <tr>
-                    <td>{{ q.difficulty }}</td>
-                    <td>{{ q.utilised }}</td>
-                </tr>
-                    {% endfor %}
-            </table>
-        </td>
-    </table>
+    <div class="questionpool">
+        <form method="POST" action="">
+            <div class="allquestions">
+                {{ selectquestions.csrf_token }}
+                {% if typeofQs == 'All' %}
+                    <h5>Multiple Choice</h5>
+                    <p>{{ selectquestions.t1opts }}</p>
+                    <h5>True/False</h5>
+                    <p>{{ selectquestions.t2opts }}</p>
+                {% elif typeofQs == 'Type1' %}
+                    <p>{{ selectquestions.t1opts }}</p>
+                {% elif typeofQs == 'Type2' %}
+                    <p>{{ selectquestions.t2opts }}</p>
+                {% endif %}
+            </div>
+        </form>
+        <div class='btns_addq'>
+            <form method="POST" action="">
+                <div class='addquestion_btn'>
+                    <input type="submit" name="add_question" value="Add Questions">
+                </div>
+                <div class="addquestion_otherbtns">
+                    <input type="submit" name="add_question" value="Save as draft">
+                    <input type="submit" name="add_question" value="Preview">
+                    <input type="submit" name="add_question" value="Publish">
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
 {% endblock %}

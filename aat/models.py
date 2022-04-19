@@ -47,9 +47,14 @@ class Assessments(db.Model):
     duedatetime = db.Column(db.String, nullable=True)
     timelimit = db.Column(db.Integer, nullable=True)
     totalmark = db.Column(db.Integer, nullable=False, default=100)
+    status = db.Column(db.String, nullable=False)
     assessmentT1Qs = db.relationship('Type1Questions', backref='assessments', lazy=True)
     assessmentT2Qs = db.relationship('Type2Questions', backref='assessments', lazy=True)
     comments = db.relationship('Comments', backref = 'assessments', lazy=True)
+
+    # @property
+    # def format_duedate(self):
+    #     return self.duedate.strftime('%Y-%m-%d')
 
     def __repr__(self):
         return f"Assessment('{self.course_code}',''{self.assessmenttitle}','{self.assessmenttype}','{self.duedate}','{self.duedatetime}')"

@@ -1,5 +1,44 @@
 {% extends 'layout.html' %}
 {% block header %}Assessment preview{% endblock %}
 {% block content %}
-<p>due date is {{ session['duedate'] }}</p>
+    <div class="currentAssessmentInfo_preview">
+        <h5>Course: {{ assessment.course_code }}</h5>
+        <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
+        <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
+        <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
+        <h5>Time Limit: {{ assessment.timelimit }}</h5>
+        <h5>Total Mark: {{ assessment.totalmark }}</h5>
+    </div>
+    <hr>
+    <div class="showquestions">
+        <div class="questions">
+            <ol>
+                {% for q in assessmentT1Qs %}
+                <li>
+                    <h4>{{ q.title }}</h4>
+                    <p>A: {{ q.optionA }}</p>
+                    <p>B: {{ q.optionB }}</p>
+                    <p>C: {{ q.optionC }}</p>
+                    {% if q.optionD != null %}
+                        <p>D: {{ q.optionD }}</p>
+                    {% endif %}
+                </li>
+                {% endfor %}
+                {% for q in assessmentT2Qs %}
+                <li>
+                    <p>{{ q }}</p>
+                    <p>True</p>
+                    <p>False</p>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+        <div class="preview_button">
+            <form method="POST" action="">
+                <input type='submit' name="preview" value='Back'>
+                <input type='submit' name="preview" value='Save as draft'>
+                <input type='submit' name="preview" value='Publish'>
+            </form>
+        </div>
+    </div>
 {% endblock content %}

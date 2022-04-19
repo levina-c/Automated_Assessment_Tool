@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+{% block header %}Edit Assessment{% endblock %}
+{% block content %}
+<div class="editassessmentpage">
+    <!-- <div class='edit_form'> -->
+        <div class="edit_assessment_info">
+            <form method="POST" action="">
+            {{ edit_assessment.csrf_token }}
+                <div><p class="course">{{ edit_assessment.course.label }} {{ edit_assessment.course }}</p></div>
+                <div><p class="assessmentTitle">{{ edit_assessment.assessmenttitle.label }} {{ edit_assessment.assessmenttitle }}</p></div>
+                <div><p class="assessmentType">{{ edit_assessment.assessmenttype.label }} {{ edit_assessment.assessmenttype }}</p></div>
+                <div><p class="dueDate">{{ edit_assessment.duedate.label }} {{ edit_assessment.duedate }} {{ edit_assessment.hidden_tag()}}</p></div>
+                <div><p class="dueDateTime">{{ edit_assessment.duedatetime.label }} {{ edit_assessment.duedatetime }} {{ edit_assessment.hidden_tag()}}</p></div>
+                <div><p class="timeLimit">{{ edit_assessment.timelimit.label }} {{ edit_assessment.timelimit(value=assessment.timelimit)}}</p></div>
+                <div><p class="totalMark">{{ edit_assessment.totalmark.label }} {{ edit_assessment.totalmark(value=assessment.totalmark)}}</p></div>
+                <div>{{ edit_assessment.update }}</div>
+            </form>
+        </div>
+    <!-- </div> -->
+    <hr>
+    <div class="showquestions">
+        <form method='POST' action=''>
+            <ol>
+                {% for q in assessmentT1Qs %}
+                <li>
+                    <p>{{ q.title }} <input type="submit" name='del' value='delete'></p>
+                </li>
+                {% endfor %}
+                {% for q in assessmentT2Qs %}
+                <li>
+                    <p>{{ q.title }} <input type="submit" name='del' value='delete'></p>
+                </li>
+                {% endfor %}
+            </ol>
+        </form>
+    </div>
+    <div class="addquestions_edit">
+        <button type="button" onclick="window.location.href='{{ url_for('addassessmentquestion', currentAssessmentID=assessmentID) }}';"> Add questions </button>
+    </div>
+    <div class="delete_assessment">
+        <form method="POST" action="">
+            {% if assessment.status == 'Draft' %}
+                <input type="submit" name='del' value='Save'>
+                <input type="submit" name='del' value='Publish'>
+            {% elif assessment.status == 'Published' %}
+                <input type="submit" name='del' value='Update'>
+            {% endif %}
+            <input type="submit" name='del' value='Preview'>
+            <input type="submit" name='del' value='Delete Assessment'>
+        </form>
+    </div>
+</div>
+{% endblock content %}

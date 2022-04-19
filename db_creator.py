@@ -6,16 +6,17 @@ db.drop_all()
 db.create_all()
 
 course1 = Courses(courseCode = 'CMT120', courseName = 'Fundamentals of Programming')
-course2 = Courses(courseCode = 'CMT210', courseName = 'Algorithms, Data Structures and Programming')
+course2 = Courses(courseCode = 'CMT219', courseName = 'Algorithms, Data Structures and Programming')
 course3 = Courses(courseCode = 'CMT220', courseName = 'Databases and Modelling')
 
 assessment1 = Assessments(
-    course_code = "CMT210",
+    course_code = "CMT219",
     assessmenttitle = "Assessment 1",
     assessmenttype = "Test",
-    duedate = '2022-05-01',
+    duedate = '01/05/2022',
     duedatetime = '09:30',
-    totalmark = 100
+    totalmark = 100,
+    status = 'Published'
     )
 
 t1q1 = Type1Questions(
@@ -40,7 +41,7 @@ t1q2 = Type1Questions(
     difficulty = 'Medium',
     utilised = False )
 t1q3 = Type1Questions(
-    course_code = 'CMT210', 
+    course_code = 'CMT219', 
     assessment_id = 1,
     title = 'What is the value returned by function compareTo() if the invoking String is less than the String compared?', 
     optionA = 'zero',
@@ -52,7 +53,7 @@ t1q3 = Type1Questions(
     difficulty = 'Difficult',
     utilised = True )
 t1q4 = Type1Questions(
-    course_code = 'CMT210',
+    course_code = 'CMT219',
     assessment_id = 1,
     title = 'What are valid statements for suspend() and resume() methods of the Thread class?', 
     optionA = 'Suspend() method is deadlock prone.',

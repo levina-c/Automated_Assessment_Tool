@@ -1,3 +1,4 @@
+/* general layout */
 *{
     font-family: "Rubik", sans-serif;
 }
@@ -6,6 +7,7 @@
     display: flex;
     flex-direction: row;
     width: 100%;
+    height:150vh;
     margin: 0;
     padding:0;
     border:0;
@@ -17,10 +19,19 @@
     background-color: rgb(59, 59, 59);
     gap: 20px;
     height: 100%;
-    width: 230px;
-    position: absolute;
+    /* width: 20px; */
     text-align: center;
     align-items: center;
+    flex-grow: 1;
+    flex-basis: 10rem;
+}
+
+.navbar_content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: space-between;
+    gap: 30px;
 }
 
 .logo {
@@ -33,8 +44,11 @@
 
 .menu {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 40px;
+    height: auto;
     width: 230px;
+    align-items: stretch;
     margin:auto;
 }
 
@@ -43,7 +57,6 @@
     margin-left: 35px;
     align-items: center;
     gap: 20px;
-    height: 50px;
     width: 100%;
 }
 
@@ -59,10 +72,10 @@
 
 .loginout{
     display: flex;
-    align-items: center;
+    flex-direction: column;
     align-self: center;
     gap: 10px;
-    padding-bottom: 30px;
+    padding-top: 30px;
 }
 
 .navbar,
@@ -77,11 +90,16 @@
 
 .pagecontent{
     display: flex;
-    width: 100%;
     flex-direction: column;
     align-items:center;
-    height: 100%;
-    padding-left: 190px;
+    flex-basis: 0;
+    flex-grow: 999;
+}
+
+.content{
+    display:flex;
+    flex-direction: column;
+    width:100%;
 }
 
 .title{
@@ -92,11 +110,6 @@
 
 .personalinfo{
     line-height: 50%;
-}
-
-.menu {
-    display: flex;
-    flex-direction: column;
 }
 
 .loginout {
@@ -112,18 +125,156 @@ hr{
     width: 50%;
 }
 
-.questionpool {
-    width: 600px;
+.flashedmsg {
+    font-size: 15px;
 }
 
-.difficultynused {
-    vertical-align: top;
+/* assessment page */
+.assessment_page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
 }
 
-.difficultynused th {
-    padding-bottom: 15px;
+.create_assessment {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 150px;
 }
 
-.difficultynused tr {
+.assessmentlist {
+    display: flex;
+    flex-direction: column;
+    /* margin:auto; */
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width:80%;
+}
+
+#published,
+#draft {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#published h5,
+#draft h5 {
+    font-size: 20px;
+    margin-bottom: -5px;
+    background-color: rgb(59, 59, 59);
+    color: white;
+    padding-left: 10px;
+}
+
+table {
+    border-spacing: 20px;
+    text-align: center;
+}
+
+/* edit assessment page */
+.editassessmentpage {
+    display: flex;
+    flex-direction: column;
+    /* width:100%; */
+}
+
+
+.edit_assessment_info,
+.showquestions {
+    display: flex;
+    flex-direction: column;
+    width:70%;
+    margin:auto;
+    align-content: flex-end;
+}
+
+.questions{
+    width:90%;
+}
+
+.currentAssessmentInfo_addq,
+.currentAssessmentInfo_preview {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    align-items: flex-start;
+    width: 70%;
+}
+
+.currentAssessmentInfo {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+
+.addquestions_edit {
+    align-self: flex-end;
+    align-items: flex-end;
+    justify-content: flex-end;
+    margin:auto;
     padding-bottom: 20px;
+}
+
+.delete_assessment {
+    display: flex;
+    flex-direction: column;
+    margin:auto;
+    align-self: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+
+
+/* Add assessment question page */
+.addquestionbox {
+    display: flex;
+    flex-direction: column;
+    /* margin: auto; */
+    align-items: center;
+}
+
+/* .currentAssessmentInfo_addq {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-start;
+    margin: auto;
+} */
+
+.sortQuestions{
+    align-self:center;
+}
+
+.questionpool{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width:70%;
+}
+
+.allquestions {
+    padding-bottom: 50px;
+}
+
+.btns_addq {
+    align-self: flex-end;
+}
+
+.preview_button,
+.addquestion_otherbtns,
+.addquestion_btn {
+    display: flex;
+    align-self: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    gap: 20px;
 }

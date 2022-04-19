@@ -13,16 +13,17 @@ class AssessmentForm(FlaskForm):
     course = SelectField('Course', validators=[InputRequired()], choices=[
         ('','Select Course'),
         ('CMT120','CMT120 Fundamentals of Programming'),
-        ('CMT129','CMT129 Algorithms, Data Structures and Programming'),
+        ('CMT219','CMT219 Algorithms, Data Structures and Programming'),
         ('CMT220','CMT220 Databases and Modelling')])
     assessmenttitle = StringField('Assessment Title', validators=[InputRequired()])
     assessmenttype = SelectField('Assessment Type', validators=[InputRequired()], choices=[('', 'Select Type'),('Class quiz','Class quiz'), ('Test','Test'),('Exam','Exam')])
-    duedate = DateField('Due Date', format='%Y-%m-%d', default=datetime.now())
+    duedate = DateField('Due Date', format='%Y-%m-%d', default=datetime.now().date())
     duedatetime = TimeField('Time', format='%H:%M', default=datetime.now())
     timelimit = IntegerField('Time Limit', default='60')
     totalmark = IntegerField('Total Mark', default='100')
     savenexit = SubmitField('Save and Exit')
     nextpage = SubmitField('Next')
+    update = SubmitField('Save')
 
     def validate_course(self, course):
         if course is None:
@@ -32,34 +33,18 @@ class AssessmentForm(FlaskForm):
         if assessmenttype is None:
             raise ValidationError('Please select an assessment type')
 
-class sortQuestionsByType(FlaskForm):
-    qType = SelectField('Question Type', validators=[InputRequired()], choices=[('All', 'All'),('Type1', 'Multiple Choice'), ('Type2', 'True/False')])
-    submit = SubmitField('Filter')
-
 class MultipleCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(html_tag='ol', prefix_label=False)
     option_widget = widgets.CheckboxInput()
 
 class chooseQuestions(FlaskForm):
-    opts = MultipleCheckboxField(label='Questions', choices=[])
+    t1opts = MultipleCheckboxField(label='Questions', choices=[])
+    t2opts = MultipleCheckboxField(label='Questions', choices=[])
     submit = SubmitField('Add')
-class searchKeywords(FlaskForm):
-    searchbar = SearchField(label='Enter Keyword')
-    submit = SubmitField('Search')
-class QueryMultipleCheckboxField(QuerySelectMultipleField):
-    widget = widgets.ListWidget(html_tag='ol', prefix_label=False)
-    option_widget = widgets.CheckboxInput()
-
-def t1_query():
-    return Type1Questions.query.filter_by(course_code = 'CMT220').all()
-
-def t2_query():
-    return Type2Questions.query.filter_by(course_code = 'CMT220').all()
 
 class filterquestionform(FlaskForm):
     qType = SelectField('Question Type', validators=[InputRequired()], choices=[('All', 'All'),('Type1', 'Multiple Choice'), ('Type2', 'True/False')])
-    used = SelectField('Question Type', validators=[InputRequired()], choices=[('All', 'All'),('Used', 'Used'), ('Unused', 'Unused')])
+    used = SelectField('Used', validators=[InputRequired()], choices=[('All', 'All'),('Used', 'Used'), ('Unused', 'Unused')])
+    difficulty = SelectField('Difficulty', validators=[InputRequired()], choices=[('All', 'All'),('Easy', 'Easy'), ('Medium', 'Medium'), ('Difficult', 'Difficult')])
     searchbar = SearchField(label='Enter Keyword')
-class chooseQuestions2(FlaskForm):
-    t1opts = QueryMultipleCheckboxField(query_factory=t1_query)
-    t2opts = QueryMultipleCheckboxField(query_factory=t2_query)
+    filterq = SubmitField('Filter')

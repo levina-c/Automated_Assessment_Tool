@@ -1,5 +1,68 @@
 {% extends 'layout.html' %}
 {% block header %}Assessment{% endblock %}
 {% block content %}
-    
+<div class="assessment_page">
+    <div class="create_assessment">
+        <div>
+            <form method="POST" action="">
+                <input type="submit" name="assessment" value="Create assessment">
+            </form>
+        </div>
+        <div>
+            <form method="POST" action="">
+                <input type="submit" name="assessment" value="Create questions">
+            </form>
+        </div>
+    </div>
+    <div class="assessmentlist">
+        {% for assessment in allassessments %}
+            {% if assessment.status == 'Published' %}
+                <div id='published'>
+                    <h5>Published</h5>
+                    <table>
+                        <th>Course</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Due Date</th>
+            {% break %}
+            {% endif %}
+        {% endfor %}
+            {% for assessment in allassessments %}
+                {% if assessment.status == 'Published' %}
+                        <tr>
+                            <td>{{ assessment.course_code }}</td>
+                            <td><a href="indiassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                            <td>{{ assessment.status }}</td>
+                            <td>{{ assessment.duedate }}</td>
+                        </tr>
+                {% endif %}
+            {% endfor %}
+                    </table>
+                </div>
+        {% for assessment in allassessments %}
+            {% if assessment.status == 'Draft' %}
+                <div id='draft'>
+                    <h5>Draft</h5>
+                    <table>
+                        <th>Course</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Due Date</th>
+            {% break %}
+            {% endif %}
+        {% endfor %}   
+        {% for assessment in allassessments %}
+            {% if assessment.status == 'Draft' %}
+                <tr>
+                    <td>{{ assessment.course_code }}</td>
+                    <td><a href="indiassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                    <td>{{ assessment.status }}</td>
+                    <td>{{ assessment.duedate }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock content %}
