@@ -194,10 +194,6 @@ table {
     align-content: flex-end;
 }
 
-.questions{
-    width:90%;
-}
-
 .deleteq_button{
     display: flex;
     align-self: flex-end;
@@ -208,9 +204,13 @@ table {
 .currentAssessmentInfo_preview {
     display: flex;
     flex-direction: column;
-    margin: auto;
+    margin: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     align-items: flex-start;
-    width: 70%;
+    /* width: 70%; */
+    font-size: 20px;
+    line-height: 0px;
 }
 
 .currentAssessmentInfo {
@@ -238,18 +238,26 @@ table {
 }
 
 /* add assessment page */
+.newassessment_page{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+}
 .new_assessment {
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin:auto;
+    width: 70%
 }
 
 /* Add assessment question page */
 .addquestionbox {
     display: flex;
     flex-direction: column;
-    /* margin: auto; */
+    margin: 100px;
+    margin-top: 20px;
     align-items: center;
 }
 
@@ -261,10 +269,10 @@ table {
 .questionpool{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    width:70%;
+    /* align-items: center; */
+    /* justify-content: center; */
+    /* align-content: center; */
+    width:60%;
 }
 
 .allquestions {
@@ -274,14 +282,28 @@ table {
 .btns_addq {
     align-self: flex-end;
 }
-
-.preview_button,
-.addquestion_otherbtns,
 .addquestion_btn {
+    float:right;
+    margin-bottom: 10px;
+}
+.preview_button,
+.addquestion_otherbtns{
     display: flex;
     align-self: flex-end;
     align-content: flex-end;
     justify-content: flex-end;
     padding-bottom: 20px;
     gap: 20px;
+}
+
+/* preview assessment page */
+.preview_page{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.questions{
+    width:90%;
+    padding-bottom: 20px;
 }

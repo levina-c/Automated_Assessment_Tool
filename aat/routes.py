@@ -17,7 +17,7 @@ def course():
 
 @app.route("/assessment", methods=['GET','POST'])
 def assessment():
-    allassessments = Assessments.query.order_by(Assessments.course_code, Assessments.status).all()
+    allassessments = Assessments.query.order_by(Assessments.course_code, Assessments.status, Assessments.duedate).all()
     if request.method == 'POST':
         if request.form.get("assessment") == 'Create assessment':
             return redirect(url_for('addassessment'))
@@ -98,7 +98,8 @@ def indiassessment(assessmentID):
             T1Qs_todel.assessment_id = None
             T1Qs_todel.utilised = False
         db.session.commit()
-        flash("Questions have been deleted")
+        return redirect(url_for('indiassessment', assessmentID=assessment.id))
+        # flash("Questions have been deleted")
         
     return render_template("indiassessment.html", assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, edit_assessment=edit_assessment, edit_question=edit_question, assessmentID=assessmentID, delete_question=delete_question)
 
@@ -138,13 +139,13 @@ def t2question_query(coursecode, difficultylevel, ifutilised, key):
 def t1question_query_noKey(coursecode, difficultylevel, ifutilised):
     return Type1Questions.query.filter_by(course_code = coursecode, difficulty=difficultylevel, utilised = ifutilised).all()
 
-def t2question_quer_noKey(coursecode, difficultylevel, ifutilised):
+def t2question_query_noKey(coursecode, difficultylevel, ifutilised):
     return Type2Questions.query.filter_by(course_code = coursecode, difficulty=difficultylevel, utilised = ifutilised).all()
 
-def t1question_quer_noStatus(coursecode, difficultylevel):
+def t1question_query_noStatus(coursecode, difficultylevel):
     return Type1Questions.query.filter_by(course_code = coursecode, difficulty=difficultylevel, tags = key).all()
 
-def t2question_quer_noStatus(coursecode, difficultylevel):
+def t2question_query_noStatus(coursecode, difficultylevel):
     return Type2Questions.query.filter_by(course_code = coursecode, difficulty=difficultylevel, tags = key).all()
 
 
@@ -198,7 +199,7 @@ def addassessmentquestion(currentAssessmentID):
                 # has keyword input + all used status 
                 else:
                     if difficulty == 'Easy':
-                        T1questions = t1question_quer_noStatus(assessment.course_code, 'Easy', keyword).all()
+                        T1questions = t1question_query_noStatus(assessment.course_code, 'Easy', keyword).all()
                         T2questions = t2question_query_noStatus(assessment.course_code, 'Easy', keyword).all()
                     elif difficulty == 'Medium':
                         T1questions = t1question_query_noStatus(assessment.course_code, 'Medium', keyword).all()
@@ -245,7 +246,7 @@ def addassessmentquestion(currentAssessmentID):
                 # no keyword input + all used status
                 else:
                     if difficulty == 'Easy':
-                        T1questions = t1question_quer_noStatus(assessment.course_code, 'Easy').all()
+                        T1questions = t1question_query_noStatus(assessment.course_code, 'Easy').all()
                         T2questions = t2question_query_noStatus(assessment.course_code, 'Easy').all()
                     elif difficulty == 'Medium':
                         T1questions = t1question_query_noStatus(assessment.course_code, 'Medium').all()
@@ -280,7 +281,9 @@ def addassessmentquestion(currentAssessmentID):
             flash('No questions have been selected')
             print('no t1/t2 questions have been chosen')
 
-    elif request.form.get("add_question") == "Save as draft":
+    elif request.form.get("add_question") == "Edit details":
+        return redirect(url_for('indiassessment', assessmentID = currentAssessmentID))
+    elif request.form.get("add_question") == "Save":
         flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
         assessment.status = 'Draft'
         db.session.commit()

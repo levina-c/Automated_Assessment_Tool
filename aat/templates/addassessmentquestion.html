@@ -33,16 +33,17 @@
                     <p>{{ selectquestions.t2opts }}</p>
                 {% endif %}
             </div>
+            <input class='addquestion_btn' type="submit" name="add_question" value="Add Questions">
         </form>
         <div class='btns_addq'>
             <form method="POST" action="">
-                <div class='addquestion_btn'>
-                    <input type="submit" name="add_question" value="Add Questions">
-                </div>
                 <div class="addquestion_otherbtns">
-                    <input type="submit" name="add_question" value="Save as draft">
+                    <input type="submit" name="add_question" value="Edit details">
+                    <input type="submit" name="add_question" value="Save">
                     <input type="submit" name="add_question" value="Preview">
+                    {% if assessment.status == 'Draft' %}
                     <input type="submit" name="add_question" value="Publish">
+                    {% endif %}
                 </div>
             </form>
         </div>

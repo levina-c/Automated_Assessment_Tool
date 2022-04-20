@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block header %}Assessment preview{% endblock %}
 {% block content %}
+<div class="preview_page">
     <div class="currentAssessmentInfo_preview">
         <h5>Course: {{ assessment.course_code }}</h5>
         <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
@@ -26,7 +27,7 @@
                 {% endfor %}
                 {% for q in assessmentT2Qs %}
                 <li>
-                    <p>{{ q }}</p>
+                    <h4>{{ q.title }}</h4>
                     <p>True</p>
                     <p>False</p>
                 </li>
@@ -42,4 +43,5 @@
             </form>
         </div>
     </div>
+</div>
 {% endblock content %}
