@@ -16,6 +16,7 @@ assessment1 = Assessments(
     duedate = '01/05/2022',
     duedatetime = '09:30',
     totalmark = 100,
+    retake = False,
     status = 'Published'
     )
 
@@ -28,6 +29,7 @@ t1q1 = Type1Questions(
     correct_answer = 'A',
     tags = 'SQL',
     difficulty = 'Easy',
+    point = 10,
     utilised = False )
 t1q2 = Type1Questions(
     course_code = 'CMT220', 
@@ -39,6 +41,7 @@ t1q2 = Type1Questions(
     correct_answer = 'C',
     tags = 'notation',
     difficulty = 'Medium',
+    point = 10,
     utilised = False )
 t1q3 = Type1Questions(
     course_code = 'CMT219', 
@@ -51,6 +54,7 @@ t1q3 = Type1Questions(
     correct_answer = 'B',
     tags = 'compareto',
     difficulty = 'Difficult',
+    point = 10,
     utilised = True )
 t1q4 = Type1Questions(
     course_code = 'CMT219',
@@ -63,6 +67,7 @@ t1q4 = Type1Questions(
     correct_answer = 'D',
     tags = 'thread',
     difficulty = 'Medium',
+    point = 10,
     utilised = True )
 t2q1 = Type2Questions(
     course_code = 'CMT220',
@@ -71,6 +76,7 @@ t2q1 = Type2Questions(
     tags = 'cartesian',
     explanation = 'The Cartesian product X×Y between two sets X and Y is the set of all possible ordered pairs with first element from X and second element from Y: X×Y={(x,y):x∈X and y∈Y}.',
     difficulty = 'Easy',
+    point = 10,
     utilised = False )
 
 comment1 = Comments(

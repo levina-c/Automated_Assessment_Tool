@@ -9,6 +9,11 @@
         <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
         <h5>Time Limit: {{ assessment.timelimit }}</h5>
         <h5>Total Mark: {{ assessment.totalmark }}</h5>
+        {% if assessment.retake == True %}
+        <h5>Student Retake: Yes </h5>
+        {% else %}
+        <h5>Student Retake: No </h5>
+        {% endif %}
     </div>
     <hr>
     <div class="sortQuestions">

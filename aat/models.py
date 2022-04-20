@@ -8,6 +8,7 @@ class Courses(db.Model):
     assessment = db.relationship('Assessments', backref='courses', lazy=True)
     type1Qs = db.relationship('Type1Questions', backref='courses', lazy=True)
     type2Qs = db.relationship('Type2Questions', backref='courses', lazy=True)
+
 class Type1Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String(7), db.ForeignKey('courses.courseCode'), nullable=False)
@@ -21,10 +22,12 @@ class Type1Questions(db.Model):
     tags = db.Column(db.Text, nullable=True)
     explanation = db.Column(db.Text, nullable=True)
     difficulty = db.Column(db.String(15), nullable=False)
+    point = db.Column(db.Integer, nullable=False)
     utilised = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
         return f'{self.title}'
+
 class Type2Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
@@ -34,10 +37,12 @@ class Type2Questions(db.Model):
     tags = db.Column(db.Text, nullable=True)
     explanation = db.Column(db.Text, nullable=True)
     difficulty = db.Column(db.String(15), nullable=False)
+    point = db.Column(db.Integer, nullable=False)
     utilised = db.Column(db.Boolean, nullable=False, default=False)
 
     def __repr__(self):
         return f'{self.title}'
+
 class Assessments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String, db.ForeignKey('courses.courseCode'), nullable=False)
@@ -47,6 +52,7 @@ class Assessments(db.Model):
     duedatetime = db.Column(db.String, nullable=True)
     timelimit = db.Column(db.Integer, nullable=True)
     totalmark = db.Column(db.Integer, nullable=False, default=100)
+    retake = db.Column(db.Boolean, default=True)
     status = db.Column(db.String, nullable=False)
     assessmentT1Qs = db.relationship('Type1Questions', backref='assessments', lazy=True)
     assessmentT2Qs = db.relationship('Type2Questions', backref='assessments', lazy=True)

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_datepicker import datepicker
-from wtforms import RadioField, SelectField, SubmitField, StringField, IntegerField, TimeField, RadioField, SelectMultipleField, widgets, SearchField
+from wtforms import RadioField, SelectField, SubmitField, StringField, IntegerField, TimeField, RadioField, SelectMultipleField, widgets, SearchField, BooleanField
 from wtforms.validators import InputRequired, ValidationError
 from datetime import datetime
 from wtforms.fields import DateField
@@ -21,6 +21,7 @@ class AssessmentForm(FlaskForm):
     duedatetime = TimeField('Time', format='%H:%M', default=datetime.now())
     timelimit = IntegerField('Time Limit', default='60')
     totalmark = IntegerField('Total Mark', default='100')
+    retake = BooleanField('Student Retake')
     savenexit = SubmitField('Save and Exit')
     nextpage = SubmitField('Next')
     update = SubmitField('Save')

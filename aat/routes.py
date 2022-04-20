@@ -41,32 +41,32 @@ def indiassessment(assessmentID):
         duedate = datetime.datetime.strptime(assessment.duedate,'%d/%m/%Y'),
         duedatetime = datetime.datetime.strptime(assessment.duedatetime,"%H:%M"),
         timelimit = assessment.timelimit,
-        totalmark = assessment.totalmark)
+        totalmark = assessment.totalmark,
+        retake = assessment.retake)
         
     edit_question = chooseQuestions()
     delete_question = deleteQuestions()
 
 # edit assessment details
-    if edit_assessment.validate_on_submit:
-        try: 
-            assessment.course_code = edit_assessment.course.data
-            assessment.assessmenttitle = edit_assessment.assessmenttitle.data
-            assessment.assessmenttype = edit_assessment.assessmenttype.data
-            assessment.duedate = edit_assessment.duedate.data.strftime('%d/%m/%Y')
-            assessment.duedatetime = edit_assessment.duedatetime.data.strftime("%H:%M")
-            assessment.timelimit = edit_assessment.timelimit.data
-            assessment.totalmark = edit_assessment.totalmark.data
-            # print(edit_assessment.course.data,edit_assessment.assessmenttitle.data, edit_assessment.assessmenttype.data,edit_assessment.duedate.data,edit_assessment.duedatetime.data,edit_assessment.timelimit.data,edit_assessment.totalmark.data)
-            db.session.commit()
-            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been updated")
-        except:
-            db.session.rollback()
-            print('some cannot be updated')
+    if request.form.get('Save_d') == 'Save':
+        assessment.course_code = edit_assessment.course.data
+        assessment.assessmenttitle = edit_assessment.assessmenttitle.data
+        assessment.assessmenttype = edit_assessment.assessmenttype.data
+        assessment.duedate = edit_assessment.duedate.data.strftime('%d/%m/%Y')
+        assessment.duedatetime = edit_assessment.duedatetime.data.strftime("%H:%M")
+        assessment.timelimit = edit_assessment.timelimit.data
+        assessment.totalmark = edit_assessment.totalmark.data
+        assessment.retake = edit_assessment.retake.data
+        # print(edit_assessment.course.data,edit_assessment.assessmenttitle.data, edit_assessment.assessmenttype.data,edit_assessment.duedate.data,edit_assessment.duedatetime.data,edit_assessment.timelimit.data,edit_assessment.totalmark.data)
+        db.session.commit()
+        flash(f"{assessment.course_code} {assessment.assessmenttitle} has been updated")
 
     if request.form.get('del') == 'Delete Assessment':
         flash(f"{assessment.course_code} {assessment.assessmenttitle} has been deleted")
         db.session.delete(assessment)
         db.session.commit()
+        return redirect(url_for('assessment'))
+    elif request.form.get('del') == 'Back':
         return redirect(url_for('assessment'))
     elif request.form.get('del') == 'Publish':
         flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
@@ -115,6 +115,7 @@ def addassessment():
                             duedatetime = addassessmentform.duedatetime.data.strftime('%H:%M'),
                             timelimit = addassessmentform.timelimit.data,
                             totalmark = addassessmentform.totalmark.data,
+                            retake = addassessmentform.retake.data,
                             status = 'Draft')
         db.session.add(assessment)
         db.session.commit()
@@ -308,6 +309,8 @@ def previewassessment(currentAssessmentID):
     if request.form.get("preview") == 'Add Questions':
         return redirect(url_for('addassessmentquestion', currentAssessmentID=currentAssessmentID))
     elif request.form.get("preview") == 'Back':
+        return redirect(url_for('assessment'))
+    elif request.form.get("preview") == 'Edit Assessment':
         return redirect(url_for('indiassessment', assessmentID=assessment.id))
     elif request.form.get("preview") == 'Publish':
         assessment.status = "Published"

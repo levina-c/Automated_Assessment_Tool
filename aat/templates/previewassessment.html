@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block header %}Assessment preview{% endblock %}
+{% block header %}Assessment Preview{% endblock %}
 {% block content %}
 <div class="preview_page">
     <div class="currentAssessmentInfo_preview">
@@ -9,6 +9,11 @@
         <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
         <h5>Time Limit: {{ assessment.timelimit }}</h5>
         <h5>Total Mark: {{ assessment.totalmark }}</h5>
+        {% if assessment.retake == True %}
+        <h5>Student Retake: Yes </h5>
+        {% else %}
+        <h5>Student Retake: No </h5>
+        {% endif %}
     </div>
     <hr>
     <div class="showquestions">
@@ -37,6 +42,7 @@
         <div class="preview_button">
             <form method="POST" action="">
                 <input type='submit' name="preview" value='Back'>
+                <input type='submit' name="preview" value='Edit Assessment'>
                 <input type='submit' name="preview" value='Add Questions'>
                 <input type='submit' name="preview" value='Save as draft'>
                 <input type='submit' name="preview" value='Publish'>
