@@ -9,6 +9,11 @@
         <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
         <h5>Time Limit: {{ assessment.timelimit }}</h5>
         <h5>Total Mark: {{ assessment.totalmark }}</h5>
+        {% if marks < assessment.totalmark %}
+        <h5 class="notAddedUp">Current Marks: {{ marks }}</h5>
+        {% else %}
+        <h5 class="AddedUp">Current Marks: {{ marks }}</h5>
+        {% endif %}
         {% if assessment.retake == True %}
         <h5>Student Retake: Yes </h5>
         {% else %}
@@ -28,13 +33,15 @@
                     {% if q.optionD != null %}
                         <p>D: {{ q.optionD }}</p>
                     {% endif %}
+                    <p>Point: {{ q.point }}</p>
                 </li>
                 {% endfor %}
                 {% for q in assessmentT2Qs %}
                 <li>
                     <h4>{{ q.title }}</h4>
-                    <p>True</p>
-                    <p>False</p>
+                    <p> True</p>
+                    <p> False</p>
+                    <p>Point: {{ q.point }}</p>
                 </li>
                 {% endfor %}
             </ol>
@@ -44,8 +51,12 @@
                 <input type='submit' name="preview" value='Back'>
                 <input type='submit' name="preview" value='Edit Assessment'>
                 <input type='submit' name="preview" value='Add Questions'>
-                <input type='submit' name="preview" value='Save as draft'>
+                {% if assessment.status == 'Draft' %}
+                <input type='submit' name="preview" value='Save'>
                 <input type='submit' name="preview" value='Publish'>
+                {% else %}
+                <input type='submit' name="preview" value='Update'>
+                {% endif %}
             </form>
         </div>
     </div>

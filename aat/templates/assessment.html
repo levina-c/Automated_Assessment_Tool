@@ -56,9 +56,10 @@
             {% if assessment.status == 'Draft' %}
                 <tr>
                     <td>{{ assessment.course_code }}</td>
-                    <td><a href="indiassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                    <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
                     <td>{{ assessment.status }}</td>
                     <td>{{ assessment.duedate }}</td>
+                    <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
                 </tr>
             {% endif %}
         {% endfor %}

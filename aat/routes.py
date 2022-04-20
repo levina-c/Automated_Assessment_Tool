@@ -32,7 +32,13 @@ def indiassessment(assessmentID):
     assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = assessmentID).all()
     assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = assessmentID).all()
     assessmentT1As = Type1Questions.query.filter_by(assessment_id = assessmentID).with_entities(Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
+    marks = 0
 
+    for q in assessmentT1Qs:
+        marks += q.point
+    for q in assessmentT2Qs:
+        marks += q.point
+    print(marks)
 # edit assessment form
     edit_assessment = AssessmentForm(
         course = assessment.course_code,
@@ -69,14 +75,23 @@ def indiassessment(assessmentID):
     elif request.form.get('del') == 'Back':
         return redirect(url_for('assessment'))
     elif request.form.get('del') == 'Publish':
-        flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
-        assessment.status = 'Publish'
-        db.session.commit()
-        return redirect(url_for('assessment'))
+        if marks<assessment.totalmark:
+            flash(f'{assessment.totalmark - marks} marks left to reach assigned assessment total marks')
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
+            assessment.status = 'Published'
+            db.session.commit()
+            return redirect(url_for('assessment'))
     elif request.form.get('del') == 'Save':
-        flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
-        assessment.status = 'Draft'
-        db.session.commit()
+        if marks<assessment.totalmark:
+            flash(f'Total marks in {assessment.title} don\'t add up!')
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
+            assessment.status = 'Draft'
+            db.session.commit()
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
+            assessment.status = 'Draft'
+            db.session.commit()
         return redirect(url_for('assessment'))
     elif request.form.get('del') == 'Update':
         flash(f"{assessment.course_code} {assessment.assessmenttitle} has been updated")
@@ -101,7 +116,7 @@ def indiassessment(assessmentID):
         return redirect(url_for('indiassessment', assessmentID=assessment.id))
         # flash("Questions have been deleted")
         
-    return render_template("indiassessment.html", assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, edit_assessment=edit_assessment, edit_question=edit_question, assessmentID=assessmentID, delete_question=delete_question)
+    return render_template("indiassessment.html", assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, edit_assessment=edit_assessment, edit_question=edit_question, assessmentID=assessmentID, delete_question=delete_question, marks = marks)
 
 @app.route("/addassessment", methods=['GET','POST'])
 def addassessment():
@@ -153,8 +168,15 @@ def t2question_query_noStatus(coursecode, difficultylevel):
 @app.route("/addassessmentquestion/<int:currentAssessmentID>", methods=['GET','POST'])
 def addassessmentquestion(currentAssessmentID):
     assessment=Assessments.query.get_or_404(currentAssessmentID)
+    assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.point)
+    assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.point)
+    marks = 0
+    for q in assessmentT1Qs:
+        marks+=q.point
+    for q in assessmentT2Qs:
+        marks+=q.point
     filterform = filterquestionform()
-    # 
+
     selectquestions = chooseQuestions()
     typeofQs = filterform.qType.data
     status = filterform.used.data
@@ -162,6 +184,8 @@ def addassessmentquestion(currentAssessmentID):
     difficulty = filterform.difficulty.data
     T1questions = Type1Questions.query.filter_by(course_code = assessment.course_code).all()
     T2questions = Type2Questions.query.filter_by(course_code = assessment.course_code).all()
+    
+    
     # print(T1questions)
     # print(T2questions)
     if request.form.get("add_question") == "Filter":
@@ -266,46 +290,81 @@ def addassessmentquestion(currentAssessmentID):
             print("no such query")    
     
     elif request.form.get("add_question") == "Add Questions":
-        try:
-            for qID in selectquestions.t1opts.data:
-                selectedQs = Type1Questions.query.get_or_404(qID)
+        # try:
+        
+        for qID in selectquestions.t1opts.data:
+            selectedQs = Type1Questions.query.get_or_404(qID)
+            if selectedQs.utilised == False:
+                marks += selectedQs.point
                 selectedQs.assessment_id = currentAssessmentID
                 selectedQs.utilised = True
-            for qID in selectquestions.t2opts.data:
-                selectedQs = Type2Questions.query.get_or_404(qID)
+                db.session.commit()
+                flash("Questions added")
+            elif selectedQs.assessment_id == currentAssessmentID:
+                flash(f'{selectedQs.title} has already been added to this assessment.')
+            elif selectedQs.utilised == True:
+                flash(f'{selectedQs.title} has been used.')
+        for qID in selectquestions.t2opts.data:
+            selectedQs = Type2Questions.query.get_or_404(qID)
+            if selectedQs.utilised == False:
+                marks += selectedQs.point
                 selectedQs.assessment_id = currentAssessmentID
                 selectedQs.utilised = True
-            db.session.commit()
-            flash("Questions added")
+                db.session.commit()
+                flash("Questions added")
+            elif selectedQs.assessment_id == currentAssessmentID:
+                flash(f'{selectedQs.title} has already been added to this assessment.')
+            elif selectedQs.utilised == True:
+                flash(f'{selectedQs.title} has been used.')
+        
             # return redirect(url_for('previewassessment', currentAssessmentID=currentAssessmentID))
-        except:
-            flash('No questions have been selected')
-            print('no t1/t2 questions have been chosen')
+        # except:
+        #     flash('No questions have been selected')
+        #     print('no t1/t2 questions have been chosen')
 
     elif request.form.get("add_question") == "Edit details":
         return redirect(url_for('indiassessment', assessmentID = currentAssessmentID))
     elif request.form.get("add_question") == "Save":
-        flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
-        assessment.status = 'Draft'
-        db.session.commit()
+        if marks<assessment.totalmark:
+            flash(f'Total marks in {assessment.title} don\'t add up!')
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
+            assessment.status = 'Draft'
+            db.session.commit()
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
+            assessment.status = 'Draft'
+            db.session.commit()
         return redirect(url_for('assessment'))
 
     elif request.form.get("add_question") == "Preview":
         return redirect(url_for('previewassessment', currentAssessmentID=currentAssessmentID))
 
     elif request.form.get("add_question") == "Publish":
-        flash(f"{assessment.course_code} {assessment.assessmenttitle} has been published")
-        return redirect(url_for('assessment'))
+        if marks<assessment.totalmark:
+            flash(f'{assessment.totalmark - marks} marks left to reach assigned assessment total marks')
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
+            assessment.status = 'Published'
+            db.session.commit()
+        # flash(f"{assessment.course_code} {assessment.assessmenttitle} has been published")
+            return redirect(url_for('assessment'))
 
-    return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs)
+    return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs, marks=marks)
 
 @app.route("/previewassessment/<int:currentAssessmentID>", methods=['GET','POST'])
 def previewassessment(currentAssessmentID):
     assessment=Assessments.query.get_or_404(currentAssessmentID)
-    assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.title, Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
-    assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.title)
+    assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.title, Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD, Type1Questions.point)
+    assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.title, Type2Questions.point)
     allassessmentQs = assessmentT1Qs.union(assessmentT2Qs)
     assessmentT1As = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
+    marks = 0
+
+    for q in assessmentT1Qs:
+        marks += q.point
+    for q in assessmentT2Qs:
+        marks += q.point
+    
     if request.form.get("preview") == 'Add Questions':
         return redirect(url_for('addassessmentquestion', currentAssessmentID=currentAssessmentID))
     elif request.form.get("preview") == 'Back':
@@ -313,14 +372,32 @@ def previewassessment(currentAssessmentID):
     elif request.form.get("preview") == 'Edit Assessment':
         return redirect(url_for('indiassessment', assessmentID=assessment.id))
     elif request.form.get("preview") == 'Publish':
-        assessment.status = "Published"
-        db.session.commit()
+        if marks<assessment.totalmark:
+            flash(f'{assessment.totalmark - marks} marks left to reach assigned assessment total marks')
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
+            assessment.status = 'Published'
+            db.session.commit()
+            return redirect(url_for('assessment'))
+    elif request.form.get("preview") == 'Save':
+        if marks<assessment.totalmark:
+            flash(f'Total marks in {assessment.title} don\'t add up!')
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
+            assessment.status = 'Draft'
+            db.session.commit()
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
+            assessment.status = 'Draft'
+            db.session.commit()
         return redirect(url_for('assessment'))
-    elif request.form.get("preview") == 'Save as draft':
-        assessment.status = "Draft"
-        db.session.commit()
+    elif request.form.get("preview") == 'Update':
+        if marks<assessment.totalmark:
+            flash(f'Total marks in {assessment.title} don\'t add up!')
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been updated")
+        else:
+            flash(f"{assessment.course_code} {assessment.assessmenttitle} has been updated")
         return redirect(url_for('assessment'))
-    return render_template('previewassessment.html', assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, allassessmentQs=allassessmentQs)
+    return render_template('previewassessment.html', assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, allassessmentQs=allassessmentQs, marks=marks)
 
 @app.route("/feedback")
 def feedback():

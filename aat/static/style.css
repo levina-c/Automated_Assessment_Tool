@@ -213,6 +213,10 @@ table {
     line-height: 0px;
 }
 
+.notAddedUp {
+    color: red;
+}
+
 .currentAssessmentInfo {
     display: flex;
     flex-direction: column;
