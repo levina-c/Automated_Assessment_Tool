@@ -22,6 +22,7 @@
                     <table>
                         <th>Course</th>
                         <th>Title</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Due Date</th>
             {% break %}
@@ -32,6 +33,7 @@
                         <tr>
                             <td>{{ assessment.course_code }}</td>
                             <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                            <td>{{ assessment.assessmenttype }}</td>
                             <td>{{ assessment.status }}</td>
                             <td>{{ assessment.duedate }}</td>
                             <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
@@ -47,6 +49,7 @@
                     <table>
                         <th>Course</th>
                         <th>Title</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Due Date</th>
             {% break %}
@@ -57,6 +60,7 @@
                 <tr>
                     <td>{{ assessment.course_code }}</td>
                     <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                    <td>{{ assessment.assessmenttype }}</td>
                     <td>{{ assessment.status }}</td>
                     <td>{{ assessment.duedate }}</td>
                     <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
