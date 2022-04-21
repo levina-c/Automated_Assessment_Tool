@@ -156,15 +156,17 @@ hr{
 }
 
 #published,
-#draft {
+#draft,
+#course {
     display: flex;
-    width: 70%;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
 }
 
 #published h5,
-#draft h5 {
+#draft h5,
+#course h5 {
     font-size: 20px;
     margin-bottom: -5px;
     background-color: rgb(59, 59, 59);

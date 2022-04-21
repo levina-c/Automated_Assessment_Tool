@@ -1,6 +1,6 @@
 from flask import *
 from aat import app, db
-from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions
+from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions, sortAssessment
 from aat.models import Courses, Assessments, Type1Questions, Type2Questions
 import datetime
 from sqlalchemy import desc, asc
@@ -18,12 +18,17 @@ def course():
 @app.route("/assessment", methods=['GET','POST'])
 def assessment():
     allassessments = Assessments.query.order_by(Assessments.course_code, Assessments.status, Assessments.duedate).all()
+    allcourses = Courses.query.order_by(Courses.courseCode).all()
+    sortassessment = sortAssessment(sorttype='Course')
+    # if sortassessment.validate_on_submit():
+    sortBy = sortassessment.sorttype.data
+
     if request.method == 'POST':
         if request.form.get("assessment") == 'Create assessment':
             return redirect(url_for('addassessment'))
         elif request.form.get("assessment") == "Create questions":
             return redirect(url_for('addassessment'))
-    return render_template("assessment.html", allassessments=allassessments)
+    return render_template("assessment.html", allassessments=allassessments, allcourses=allcourses, sortassessment=sortassessment, sortBy=sortBy)
 
 @app.route("/indiassessment/<int:assessmentID>", methods=['GET','POST'])
 def indiassessment(assessmentID):

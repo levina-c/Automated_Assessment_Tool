@@ -47,9 +47,14 @@ class deleteQuestions(FlaskForm):
     t1opts = MultipleCheckboxField(label='AQuestions', choices=[])
     t2opts = MultipleCheckboxField(label='AQuestions', choices=[])
     deleteq = SubmitField('Delete')
+
 class filterquestionform(FlaskForm):
     qType = SelectField('Question Type', validators=[InputRequired()], choices=[('All', 'All'),('Type1', 'Multiple Choice'), ('Type2', 'True/False')])
     used = SelectField('Used', validators=[InputRequired()], choices=[('All', 'All'),('Used', 'Used'), ('Unused', 'Unused')])
     difficulty = SelectField('Difficulty', validators=[InputRequired()], choices=[('All', 'All'),('Easy', 'Easy'), ('Medium', 'Medium'), ('Difficult', 'Difficult')])
     searchbar = SearchField(label='Enter Keyword')
     filterq = SubmitField('Filter')
+
+class sortAssessment(FlaskForm):
+    sorttype = SelectField('Sort By', choices=[('Course','Course'), ('Status','Status')])
+    sort = SubmitField('Sort')
