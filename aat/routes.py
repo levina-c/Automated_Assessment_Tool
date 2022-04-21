@@ -177,10 +177,13 @@ def addassessmentquestion(currentAssessmentID):
     assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.point)
     coursename = Courses.query.filter_by(courseCode = assessment.course_code).first()
     marks = 0
+    noOfQuestions = 0
     for q in assessmentT1Qs:
         marks+=q.point
+        noOfQuestions+=1
     for q in assessmentT2Qs:
         marks+=q.point
+        noOfQuestions+=1
     filterform = filterquestionform()
 
     selectquestions = chooseQuestions()
@@ -302,6 +305,7 @@ def addassessmentquestion(currentAssessmentID):
             selectedQs = Type1Questions.query.get_or_404(qID)
             if selectedQs.utilised == False:
                 marks += selectedQs.point
+                noOfQuestions+=1
                 selectedQs.assessment_id = currentAssessmentID
                 selectedQs.utilised = True
                 db.session.commit()
@@ -314,6 +318,7 @@ def addassessmentquestion(currentAssessmentID):
             selectedQs = Type2Questions.query.get_or_404(qID)
             if selectedQs.utilised == False:
                 marks += selectedQs.point
+                noOfQuestions+=1
                 selectedQs.assessment_id = currentAssessmentID
                 selectedQs.utilised = True
                 db.session.commit()
@@ -328,7 +333,7 @@ def addassessmentquestion(currentAssessmentID):
         #     flash('No questions have been selected')
         #     print('no t1/t2 questions have been chosen')
 
-    elif request.form.get("add_question") == "Edit details":
+    elif request.form.get("add_question") == "Edit Assessment":
         return redirect(url_for('indiassessment', assessmentID = currentAssessmentID))
     elif request.form.get("add_question") == "Save":
         if marks<assessment.totalmark:
@@ -355,7 +360,7 @@ def addassessmentquestion(currentAssessmentID):
         # flash(f"{assessment.course_code} {assessment.assessmenttitle} has been published")
             return redirect(url_for('assessment'))
 
-    return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs, marks=marks, coursename=coursename)
+    return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs, marks=marks, coursename=coursename, noOfQuestions=noOfQuestions)
 
 @app.route("/previewassessment/<int:currentAssessmentID>", methods=['GET','POST'])
 def previewassessment(currentAssessmentID):
@@ -366,7 +371,6 @@ def previewassessment(currentAssessmentID):
     assessmentT1As = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
     coursename = Courses.query.filter_by(courseCode = assessment.course_code).first()
     marks = 0
-
     for q in assessmentT1Qs:
         marks += q.point
     for q in assessmentT2Qs:
@@ -379,20 +383,22 @@ def previewassessment(currentAssessmentID):
     elif request.form.get("preview") == 'Edit Assessment':
         return redirect(url_for('indiassessment', assessmentID=assessment.id))
     elif request.form.get("preview") == 'Publish':
-        if marks<assessment.totalmark:
-            flash(f'{assessment.totalmark - marks} marks left to reach assigned assessment total marks')
-        else:
+        if marks==assessment.totalmark:
             flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
             assessment.status = 'Published'
             db.session.commit()
             return redirect(url_for('assessment'))
+        elif marks < assessment.totalmark:
+            flash(f'{assessment.totalmark - marks} marks left to reach assigned assessment total marks')
+        else:
+            flash(f'{marks - assessment.totalmark } marks over assigned assessment total marks')
     elif request.form.get("preview") == 'Save':
-        if marks<assessment.totalmark:
-            flash(f'Total marks in {assessment.title} don\'t add up!')
+        if marks==assessment.totalmark:
             flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
             assessment.status = 'Draft'
             db.session.commit()
         else:
+            flash(f'Total marks in {assessment.assessmenttitle} don\'t add up!')
             flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved")
             assessment.status = 'Draft'
             db.session.commit()
