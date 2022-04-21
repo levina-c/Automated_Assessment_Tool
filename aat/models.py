@@ -9,6 +9,9 @@ class Courses(db.Model):
     type1Qs = db.relationship('Type1Questions', backref='courses', lazy=True)
     type2Qs = db.relationship('Type2Questions', backref='courses', lazy=True)
 
+    def __repr__(self):
+        return self.courseName
+
 class Type1Questions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     course_code = db.Column(db.String(7), db.ForeignKey('courses.courseCode'), nullable=False)

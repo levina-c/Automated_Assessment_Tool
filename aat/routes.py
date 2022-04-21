@@ -175,6 +175,7 @@ def addassessmentquestion(currentAssessmentID):
     assessment=Assessments.query.get_or_404(currentAssessmentID)
     assessmentT1Qs = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.point)
     assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.point)
+    coursename = Courses.query.filter_by(courseCode = assessment.course_code).first()
     marks = 0
     for q in assessmentT1Qs:
         marks+=q.point
@@ -354,7 +355,7 @@ def addassessmentquestion(currentAssessmentID):
         # flash(f"{assessment.course_code} {assessment.assessmenttitle} has been published")
             return redirect(url_for('assessment'))
 
-    return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs, marks=marks)
+    return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs, marks=marks, coursename=coursename)
 
 @app.route("/previewassessment/<int:currentAssessmentID>", methods=['GET','POST'])
 def previewassessment(currentAssessmentID):
@@ -363,6 +364,7 @@ def previewassessment(currentAssessmentID):
     assessmentT2Qs = Type2Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type2Questions.title, Type2Questions.point)
     allassessmentQs = assessmentT1Qs.union(assessmentT2Qs)
     assessmentT1As = Type1Questions.query.filter_by(assessment_id = currentAssessmentID).with_entities(Type1Questions.optionA,Type1Questions.optionB,Type1Questions.optionC,Type1Questions.optionD)
+    coursename = Courses.query.filter_by(courseCode = assessment.course_code).first()
     marks = 0
 
     for q in assessmentT1Qs:
@@ -402,7 +404,7 @@ def previewassessment(currentAssessmentID):
         else:
             flash(f"{assessment.course_code} {assessment.assessmenttitle} has been updated")
         return redirect(url_for('assessment'))
-    return render_template('previewassessment.html', assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, allassessmentQs=allassessmentQs, marks=marks)
+    return render_template('previewassessment.html', assessment=assessment, assessmentT1Qs=assessmentT1Qs, assessmentT1As=assessmentT1As, assessmentT2Qs=assessmentT2Qs, allassessmentQs=allassessmentQs, marks=marks, coursename=coursename)
 
 @app.route("/feedback")
 def feedback():
