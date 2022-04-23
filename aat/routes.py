@@ -74,7 +74,18 @@ def indiassessment(assessmentID):
 
     if request.form.get('del') == 'Delete Assessment':
         flash(f"{assessment.course_code} {assessment.assessmenttitle} has been deleted")
+        # questions1todel = Type1Questions.query.filter_by(assessment_id = assessmentID).all()
+        # questions2todel = Type2Questions.query.filter_by(assessment_id = assessmentID).all()
+        # questions1todel.utilised = False
+        # questions2todel.utilised = False
         db.session.delete(assessment)
+        db.session.commit()
+        for q in assessmentT1Qs:
+            if q.assessment_id == None:
+                q.utilised = False
+        for q in assessmentT2Qs:
+            if q.assessment_id == None:
+                q.utilised = False
         db.session.commit()
         return redirect(url_for('assessment'))
     elif request.form.get('del') == 'Back':
@@ -337,7 +348,7 @@ def addassessmentquestion(currentAssessmentID):
         return redirect(url_for('indiassessment', assessmentID = currentAssessmentID))
     elif request.form.get("add_question") == "Save":
         if marks<assessment.totalmark:
-            flash(f'Total marks in {assessment.title} don\'t add up!')
+            flash(f'Total marks in {assessment.assessmenttitle} don\'t add up!')
             flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
             assessment.status = 'Draft'
             db.session.commit()
