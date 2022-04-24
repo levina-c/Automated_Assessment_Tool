@@ -26,13 +26,9 @@ class AssessmentForm(FlaskForm):
     nextpage = SubmitField('Next')
     update = SubmitField('Save')
 
-    def validate_course(self, course):
-        if course == '':
-            raise ValidationError('Please select a course')
-    
-    def validate_assessmenttype(self, assessmenttype):
-        if assessmenttype.data is None:
-            raise ValidationError('Please select an assessment type')
+    def validate_totalmark(self, totalmark):
+        if totalmark.data<=0:
+            raise ValidationError('Marks must be a positive integer greater than 0')
 
 class MultipleCheckboxField(SelectMultipleField):
     widget = widgets.ListWidget(html_tag='ol', prefix_label=False)

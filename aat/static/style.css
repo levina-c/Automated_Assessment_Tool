@@ -128,7 +128,7 @@ hr{
 .errors,
 .flashedmsg {
     font-size: 18px;
-    width:50%;
+    /* width:50%; */
 }
 
 /* assessment page */
