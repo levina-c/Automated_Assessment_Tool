@@ -19,7 +19,7 @@ def course():
 def assessment():
     allassessments = Assessments.query.order_by(Assessments.course_code, Assessments.status, Assessments.duedate).all()
     allcourses = Courses.query.order_by(Courses.courseCode).all()
-    sortassessment = sortAssessment(sorttype='Course')
+    sortassessment = sortAssessment(sorttype='Status')
     # if sortassessment.validate_on_submit():
     sortBy = sortassessment.sorttype.data
 
@@ -137,6 +137,8 @@ def indiassessment(assessmentID):
 @app.route("/addassessment", methods=['GET','POST'])
 def addassessment():
     addassessmentform = AssessmentForm()
+    if addassessmentform.assessmenttitle.data == '':
+        addassessmentform.assessmenttitle.data = None
     if addassessmentform.validate_on_submit():
         assessment = Assessments(course_code = addassessmentform.course.data,
                             assessmenttitle = addassessmentform.assessmenttitle.data,

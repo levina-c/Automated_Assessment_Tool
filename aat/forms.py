@@ -10,13 +10,13 @@ from aat.models import Type1Questions, Type2Questions
 from sqlalchemy.sql.expression import and_
 
 class AssessmentForm(FlaskForm):
-    course = SelectField('Course', validators=[InputRequired()], choices=[
+    course = SelectField('Course', validators=[InputRequired(message = 'Please select a course')], choices=[
         ('','Select Course'),
         ('CMT120','CMT120 Fundamentals of Programming'),
         ('CMT219','CMT219 Algorithms, Data Structures and Programming'),
         ('CMT220','CMT220 Databases and Modelling')])
-    assessmenttitle = StringField('Assessment Title', validators=[InputRequired()])
-    assessmenttype = SelectField('Assessment Type', validators=[InputRequired()], choices=[('', 'Select Type'),('Class quiz','Class quiz'), ('Test','Test'),('Exam','Exam')])
+    assessmenttitle = StringField('Assessment Title', validators=[InputRequired(message = 'Please enter a title')])
+    assessmenttype = SelectField('Assessment Type', validators=[InputRequired(message = 'Please select a type')], choices=[('', 'Select Type'),('Class quiz','Class quiz'), ('Test','Test'),('Exam','Exam')])
     duedate = DateField('Due Date', format='%Y-%m-%d', default=datetime.now().date())
     duedatetime = TimeField('Time', format='%H:%M', default=datetime.now())
     timelimit = IntegerField('Time Limit', default='60')
@@ -27,11 +27,11 @@ class AssessmentForm(FlaskForm):
     update = SubmitField('Save')
 
     def validate_course(self, course):
-        if course is None:
+        if course == '':
             raise ValidationError('Please select a course')
     
     def validate_assessmenttype(self, assessmenttype):
-        if assessmenttype is None:
+        if assessmenttype.data is None:
             raise ValidationError('Please select an assessment type')
 
 class MultipleCheckboxField(SelectMultipleField):
