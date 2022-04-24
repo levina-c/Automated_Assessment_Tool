@@ -18,7 +18,7 @@ class AssessmentForm(FlaskForm):
     assessmenttitle = StringField('Assessment Title', validators=[InputRequired(message = 'Please enter a title')])
     assessmenttype = SelectField('Assessment Type', validators=[InputRequired(message = 'Please select a type')], choices=[('', 'Select Type'),('Class quiz','Class quiz'), ('Test','Test'),('Exam','Exam')])
     duedate = DateField('Due Date', format='%Y-%m-%d', default=datetime.now().date())
-    duedatetime = TimeField('Time', format='%H:%M', default=datetime.now())
+    duedatetime = TimeField('Time', format='%H:%M', validators=[InputRequired()], default=datetime.now())
     timelimit = IntegerField('Time Limit', default='60')
     totalmark = IntegerField('Total Mark', default='100')
     retake = BooleanField('Student Retake')
