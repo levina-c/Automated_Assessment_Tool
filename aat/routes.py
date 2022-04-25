@@ -1,6 +1,6 @@
 from flask import *
 from aat import app, db
-from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions, sortAssessment
+from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions, sortAssessment, McqForm
 from aat.models import Courses, Assessments, Type1Questions, Type2Questions
 import datetime
 from sqlalchemy import desc, asc
@@ -27,7 +27,7 @@ def assessment():
         if request.form.get("assessment") == 'Create assessment':
             return redirect(url_for('addassessment'))
         elif request.form.get("assessment") == "Create questions":
-            return redirect(url_for('addassessment'))
+            return redirect(url_for('HR'))
     return render_template("assessment.html", allassessments=allassessments, allcourses=allcourses, sortassessment=sortassessment, sortBy=sortBy)
 
 @app.route("/indiassessment/<int:assessmentID>", methods=['GET','POST'])
@@ -451,3 +451,48 @@ def feedback():
 @app.route("/logout")
 def logout():
     return render_template("index.html")
+
+@app.route("/HR_admin", methods=["GET", "POST"])
+def HR_admin():
+    posts = Type1Questions.query.all()
+    return render_template("HR_admin.html", posts=posts)
+
+@app.route("/HR", methods=['GET','POST'])
+def HR():
+    mcqform = McqForm()
+    print('initial loading')
+    if mcqform.validate_on_submit():
+        print("MCQ form validated on submission")
+        type1question = Type1Questions(title = mcqform.title.data,
+        optionA = mcqform.optionA.data,
+        optionB = mcqform.optionB.data,
+        optionC = mcqform.optionC.data,
+        optionD = mcqform.optionD.data,
+        correct_answer = mcqform.correct_answer.data,
+        explanation = mcqform.explanation.data,
+        tags = mcqform.tags.data,
+        difficulty = mcqform.difficulty.data,
+        point = mcqform.point.data,
+        utilised = mcqform.utilised.data,
+        course_code = mcqform.coursecode.data,
+        assessment_id = mcqform.assessment_id.data,
+        )
+        print("Pre-db add and commit")
+        db.session.add(type1question)
+        print("Pre-db commit")
+        db.session.commit()
+        print("Successfully added a MCQ")
+        return redirect(url_for("activitystream"))
+    else: print("didn't validate")
+
+    return render_template("HR.html", mcqform=mcqform)
+
+@app.route("/MCQ_delete/<int:post_id>", methods = ['GET', 'POST'])
+def MCQ_delete(post_id):
+    ques = Type1Questions.query.filter_by(id=post_id).first()
+    if ques: 
+        msg_text = 'Question %s successfully removed' % str(ques)
+        db.session.delete(ques)
+        db.session.commit()
+        flash(msg_text)
+    return redirect(url_for("activitystream"))

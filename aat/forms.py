@@ -54,3 +54,19 @@ class filterquestionform(FlaskForm):
 class sortAssessment(FlaskForm):
     sorttype = SelectField('Sort By', choices=[('Course','Course'), ('Status','Status')])
     sort = SubmitField('Sort')
+
+class McqForm(FlaskForm):
+    title = StringField('Question title (Title)', validators=[InputRequired()])
+    assessment_id = StringField('Assessment ID')
+    coursecode = StringField('Coursecode')
+    optionA = StringField('Option A')
+    optionB = StringField('Option B')
+    optionC = StringField('Option C')
+    optionD = StringField('Option D')
+    correct_answer = StringField('Correct answer', validators=[InputRequired()])
+    tags = StringField('Tags')
+    explanation = StringField('Explanation', validators=[InputRequired()])
+    difficulty = IntegerField('Difficulty', validators=[InputRequired()])
+    point = IntegerField('Points', validators=[InputRequired()])
+    utilised = BooleanField('Utilised')
+    submit = SubmitField('Submit')
