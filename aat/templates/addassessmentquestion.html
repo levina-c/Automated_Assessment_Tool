@@ -1,5 +1,64 @@
 {% extends 'layout.html' %}
 {% block header %}<h1>Add Questions</h1>{% endblock %}
 {% block content %}
-
+<div class="addquestionbox">
+    <div class="currentAssessmentInfo_addq">
+        <h5>Course: {{ assessment.course_code }} {{ coursename }}</h5>
+        <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
+        <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
+        <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
+        <h5>Time Limit: {{ assessment.timelimit }} mins</h5>
+        <h5>Total Marks: {{ assessment.totalmark }}</h5>
+        {% if marks == assessment.totalmark %}
+        <h5 class="AddedUp">Current Marks: {{ marks }}</h5>
+        {% else %}
+        <h5 class="notAddedUp">Current Marks: {{ marks }}</h5>
+        {% endif %}
+        <h5>No. of Questions: {{ noOfQuestions }}</h5>
+        {% if assessment.retake == True %}
+        <h5>Student Retake: Yes </h5>
+        {% else %}
+        <h5>Student Retake: No </h5>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="sortQuestions">
+        <form method="POST" action="">
+            {{ filterform.csrf_token }}
+            <p>{{ filterform.qType }} {{ filterform.searchbar }} {{ filterform.used }} {{ filterform.difficulty }}
+                <input type="submit" name="add_question" value="Filter"></p>
+        </form>
+    </div>
+    <div class="questionpool">
+        <form method="POST" action="">
+            <div class="allquestions">
+                {{ selectquestions.csrf_token }}
+                {% if typeofQs == 'All' %}
+                    <h5>Multiple Choice</h5>
+                    <p>{{ selectquestions.t1opts }}</p>
+                    <h5>True/False</h5>
+                    <p>{{ selectquestions.t2opts }}</p>
+                {% elif typeofQs == 'Type1' %}
+                    <p>{{ selectquestions.t1opts }}</p>
+                {% elif typeofQs == 'Type2' %}
+                    <p>{{ selectquestions.t2opts }}</p>
+                {% endif %}
+            </div>
+            <input class='addquestion_btn' type="submit" name="add_question" value="Add Questions">
+        </form>
+        <div class='btns_addq'>
+            <form method="POST" action="">
+                <div class="addquestion_otherbtns">
+                    <input type="submit" name="add_question" value="Edit Assessment">
+                    <input type="submit" name="add_question" value="Save">
+                    <input type="submit" name="add_question" value="Preview">
+                    {% if assessment.status == 'Draft' %}
+                    <input type="submit" name="add_question" value="Publish">
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
 {% endblock %}

@@ -1,20 +1,35 @@
 {% extends 'layout.html' %}
 {% block header %}New Assessment{% endblock %}
 {% block content %}
-<form action="" method='POST'>
-    {{ addassessmentform.csrt_token }}
-    <div class="add_assessment">
-        <p class="course">{{ addassessmentform.course.label }} {{ addassessmentform.course }}</p>
-        <p class="assessmenttitle">{{ addassessmentform.assessmenttitle.label }} {{ addassessmentform.assessmenttitle}}</p>
-        <p class="assessmenttype">{{ addassessmentform.assessmenttype.label }} {{ addassessmentform.assessmenttype}}</p>
-        <p class="duedate">{{ addassessmentform.duedate.label }} {{ addassessmentform.duedate(class='datepicker')}} {{ addassessmentform.hidden_tag()}}</p>
-        <p class="duedatetime">{{ addassessmentform.duedatetime.label }} {{ addassessmentform.duedatetime}} {{ addassessmentform.hidden_tag()}}</p>
-        <p class="timelimit">{{ addassessmentform.timelimit.label }} {{ addassessmentform.timelimit}}</p>
-        <p class="totalmark">{{ addassessmentform.totalmark.label }} {{ addassessmentform.totalmark}}</p>
+<div class="newassessment_page">
+    <div class="errors">
+        {% if addassessmentform.errors.items() %}
+            {% for field, errors in addassessmentform.errors.items() %}
+                <small>
+                    <p>{{ " ".join(errors) }}</p>
+                </small>
+            {% endfor %}
+        {% endif %}
     </div>
-    <p>
-        {{ addassessmentform.savenexit }}
-        {{ addassessmentform.nextpage }}
-    </p>
-</form>
+
+    <div class="new_assessment"></div>
+        <form action="" method='POST' novalidate>
+            {{ addassessmentform.csrf_token }}
+            
+                <p class="course">{{ addassessmentform.course.label }} {{ addassessmentform.course }}</p>
+                <p class="assessmentTitle">{{ addassessmentform.assessmenttitle.label }} {{ addassessmentform.assessmenttitle}}</p>
+                <p class="assessmentType">{{ addassessmentform.assessmenttype.label }} {{ addassessmentform.assessmenttype}}</p>
+                <p class="dueDate">{{ addassessmentform.duedate.label }} {{ addassessmentform.duedate(class='datepicker')}} {{ addassessmentform.hidden_tag()}}</p>
+                <p class="dueDateTime">{{ addassessmentform.duedatetime.label }} {{ addassessmentform.duedatetime}} {{ addassessmentform.hidden_tag()}}</p>
+                <p class="timeLimit">{{ addassessmentform.timelimit.label }} {{ addassessmentform.timelimit}} mins</p>
+                <p class="totalMark">{{ addassessmentform.totalmark.label }} {{ addassessmentform.totalmark}}</p>
+                <p class="retake">{{ addassessmentform.retake.label }} {{ addassessmentform.retake}}</p>
+            
+            <p>
+                <input type="submit" name="submit_button" value="Save and Exit">
+                <input type="submit" name="submit_button" value="Add Questions">
+            </p>
+        </form>
+    </div>
+</div>
 {% endblock content %}
