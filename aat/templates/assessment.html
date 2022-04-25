@@ -43,7 +43,7 @@
                         <td>{{ assessment.assessmenttype }}</td>
                         <td>{{ assessment.status }}</td>
                         <td>{{ assessment.duedate }}</td>
-                        <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
+                        <td><a href="previewassessment/{{ assessment.id }}">View</a></td>
                     </tr>
             {% endif %}
         {% endfor %}
@@ -94,7 +94,11 @@
                                 <td>{{ assessment.assessmenttype }}</td>
                                 <td>{{ assessment.status }}</td>
                                 <td>{{ assessment.duedate }}</td>
+                                {% if assessment.status == 'Draft' %}
                                 <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
+                                {% else %}
+                                <td><a href="previewassessment/{{ assessment.id }}">View</a></td>
+                                {% endif %}
                             </tr>
                         </table>
                 {% endif %}

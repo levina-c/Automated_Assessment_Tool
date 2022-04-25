@@ -13,7 +13,7 @@
                 <p class="dueDateTime">{{ edit_assessment.duedatetime.label }} {{ edit_assessment.duedatetime }} {{ edit_assessment.hidden_tag()}}</p>
                 <p class="timeLimit">{{ edit_assessment.timelimit.label }} {{ edit_assessment.timelimit(value=assessment.timelimit)}}</p>
                 <p class="totalMark">{{ edit_assessment.totalmark.label }} {{ edit_assessment.totalmark(value=assessment.totalmark)}}</p>
-                {% if marks < assessment.totalmark %}
+                {% if marks < assessment.totalmark or marks > assessment.totalmark %}
                 <p class="notAddedUp">Current Marks: {{ marks }}</p>
                 {% else %}
                 <p class="AddedUp">Current Marks: {{ marks }}</p>

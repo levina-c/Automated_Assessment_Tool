@@ -7,7 +7,7 @@
         <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
         <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
         <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
-        <h5>Time Limit: {{ assessment.timelimit }}</h5>
+        <h5>Time Limit: {{ assessment.timelimit }} mins</h5>
         <h5>Total Marks: {{ assessment.totalmark }}</h5>
         {% if marks == assessment.totalmark %}
         <h5 class="AddedUp">Current Marks: {{ marks }}</h5>

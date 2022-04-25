@@ -7,13 +7,14 @@
         <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
         <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
         <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
-        <h5>Time Limit: {{ assessment.timelimit }}</h5>
+        <h5>Time Limit: {{ assessment.timelimit }} mins</h5>
         <h5>Total Mark: {{ assessment.totalmark }}</h5>
         {% if marks == assessment.totalmark %}
         <h5 class="AddedUp">Current Marks: {{ marks }}</h5>
         {% else %}
         <h5 class="notAddedUp">Current Marks: {{ marks }}</h5>
         {% endif %}
+        <h5>No. of Questions: {{ noOfQuestions }}</h5>
         {% if assessment.retake == True %}
         <h5>Student Retake: Yes </h5>
         {% else %}
@@ -50,12 +51,11 @@
             <form method="POST" action="">
                 <input type='submit' name="preview" value='Back'>
                 <input type='submit' name="preview" value='Edit Assessment'>
-                <input type='submit' name="preview" value='Add Questions'>
+                <input type='submit' name="preview" value='Delete Assessment'>
                 {% if assessment.status == 'Draft' %}
+                <input type='submit' name="preview" value='Add Questions'>
                 <input type='submit' name="preview" value='Save'>
                 <input type='submit' name="preview" value='Publish'>
-                {% else %}
-                <input type='submit' name="preview" value='Update'>
                 {% endif %}
             </form>
         </div>
