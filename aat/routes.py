@@ -503,9 +503,9 @@ def question():
 
     if request.method == 'POST':
         if request.form.get("multipleChoice") == 'Multiple Choice':
-            return redirect(url_for('addquestion2'))
-        elif request.form.get("trueFalse") == 'True/False':
             return redirect(url_for('HR'))
+        elif request.form.get("trueFalse") == 'True/False':
+            return redirect(url_for('addquestion2'))
 
         
     return render_template("questionpool.html", questions = questions)
