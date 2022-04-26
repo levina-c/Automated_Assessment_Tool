@@ -331,3 +331,63 @@ table {
     margin:auto;
     width: 70%
 }
+
+/* question pool page */
+.question_pool_page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.question_pool_page_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 150px;
+}
+
+.questionlist {
+    display: flex;
+    flex-direction: column;
+    /* margin:auto; */
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width:80%;
+}
+
+/* add question page */
+.new_question_page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+}
+
+.add_question_page_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 150px;
+}
+
+/* edit question page */
+.edit_question_page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+}
+
+
+.edit_question_btn {
+    display: flex;
+    align-self: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    gap: 20px;
+}

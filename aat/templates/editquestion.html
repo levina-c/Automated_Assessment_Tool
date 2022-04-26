@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block header %}Edit Question{% endblock %}
+{% block content %}
+<div class="edit_question_page">
+    <div class="edit_question_info">
+        
+        <form method="POST" action="">
+            
+            {{ edit_question.csrf_token }}
+            <p class="course">{{ edit_question.course.label }} {{ edit_question.course }}</p>
+            <p class="difficulty">{{ edit_question.difficulty.label }} {{ edit_question.difficulty }} </p>
+            <p class="point">{{ edit_question.point.label }} {{ edit_question.point }} </p>
+            <p class="tags">{{ edit_question.tags.label }} {{ edit_question.tags }}</p>
+            <p class="questionTitle">{{ edit_question.title.label }} {{ edit_question.title(cols = 48, rows = 3) }}</p>
+            <p class="question2Answer">{{ edit_question.correct_answer.label }} {{ edit_question.correct_answer }}</p>
+            <p class="questionExplanation">{{ edit_question.explanation.label }} {{ edit_question.explanation(cols = 50, rows = 10) }}</p>
+        
+
+            
+            <div class="edit_question_btn">
+                <input type='submit' name="edit_question" value='Back'>
+                <input type='submit' name="edit_question" value='Delete Question'>
+                <input type='submit' name="edit_question" value='Save'>
+            </div>
+        </form>
+    </div> 
+</div>
+
+
+{% endblock content %}

@@ -1,6 +1,6 @@
 from flask import *
 from aat import app, db
-from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions, sortAssessment, McqForm
+from aat.forms import AssessmentForm, filterquestionform, chooseQuestions, deleteQuestions, sortAssessment, McqForm, Question2Form
 from aat.models import Courses, Assessments, Type1Questions, Type2Questions
 import datetime
 from sqlalchemy import desc, asc
@@ -27,7 +27,7 @@ def assessment():
         if request.form.get("assessment") == 'Create assessment':
             return redirect(url_for('addassessment'))
         elif request.form.get("assessment") == "Create questions":
-            return redirect(url_for('HR'))
+            return redirect(url_for('question'))
     return render_template("assessment.html", allassessments=allassessments, allcourses=allcourses, sortassessment=sortassessment, sortBy=sortBy)
 
 @app.route("/indiassessment/<int:assessmentID>", methods=['GET','POST'])
@@ -496,3 +496,82 @@ def MCQ_delete(post_id):
         db.session.commit()
         flash(msg_text)
     return redirect(url_for("activitystream"))
+
+@app.route("/question", methods=['GET', 'POST'])
+def question():
+    questions = Type2Questions.query.all()
+
+    if request.method == 'POST':
+        if request.form.get("multipleChoice") == 'Multiple Choice':
+            return redirect(url_for('addquestion2'))
+        elif request.form.get("trueFalse") == 'True/False':
+            return redirect(url_for('HR'))
+
+        
+    return render_template("questionpool.html", questions = questions)
+
+@app.route("/addquestion2", methods=['GET' , 'POST'])
+def addquestion2():
+    addquestion2form = Question2Form()
+
+    if addquestion2form.validate_on_submit():
+        question = Type2Questions(
+            course_code = addquestion2form.course.data, 
+            difficulty = addquestion2form.difficulty.data, 
+            tags = addquestion2form.tags.data, 
+            point = addquestion2form.point.data, 
+            title = addquestion2form.title.data, 
+            correct_answer = addquestion2form.correct_answer.data, 
+            explanation = addquestion2form.explanation.data
+        )
+        db.session.add(question)
+        db.session.commit()
+        flash(f"{question.course_code} New question has been updated")
+
+        return redirect(url_for('question'))
+        
+    return render_template("addquestion2.html", addquestion2form = addquestion2form)
+
+
+
+
+
+@app.route("/question/edit/<int:questionID>", methods=['GET' , 'POST'])
+def editquestion(questionID):
+    question = Type2Questions.query.get_or_404(questionID)
+
+    edit_question = Question2Form(
+        course = question.course_code, 
+        difficulty = question.difficulty, 
+        point = question.point, 
+        tags = question.tags, 
+        title = question.title, 
+        correct_answer = question.correct_answer, 
+        explanation = question.explanation
+    )
+    
+
+    if request.form.get('edit_question') == 'Save':
+        question.course_code = request.form['course']
+        question.difficulty = request.form['difficulty']
+        question.point = request.form['point']
+        question.tags = request.form['tags']
+        question.title = request.form['title']
+        question.correct_answer = request.form['correct_answer']
+        question.explanation = request.form['explanation']
+
+        db.session.commit()
+        flash(f"Question: {question.title} has been saved")
+        return redirect(url_for('question'))
+
+
+    elif request.form.get("edit_question") == 'Back':
+        return redirect(url_for('question'))
+    elif request.form.get("edit_question") == 'Delete Question':
+        db.session.delete(question)
+        db.session.commit()
+        flash(f"Question: {question.title} has been deleted")
+        return redirect(url_for('question'))
+
+
+    return render_template("editquestion.html", edit_question = edit_question, question = question)
