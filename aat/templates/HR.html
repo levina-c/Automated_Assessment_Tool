@@ -2,9 +2,12 @@
 {% block header %}<h1>Add Multiple Choice Question</h1>{% endblock %}
 {% block content %}
 
+<div class="HR">
+
 <form action="" method='POST'>
     {{ mcqform.csrf_token }}
     <div class="add_mcq">
+        
         <p class="title">{{ mcqform.title.label }} {{ mcqform.title }}</p>
         <p class="assessment_id">{{ mcqform.assessment_id.label }} {{ mcqform.assessment_id}}</p>
         <p class="course_code">{{ mcqform.coursecode.label }} {{ mcqform.coursecode}}</p>
@@ -29,4 +32,5 @@
 
 </form>
 
+</div>
 {% endblock %}

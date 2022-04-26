@@ -315,3 +315,19 @@ table {
     width:90%;
     padding-bottom: 20px;
 }
+
+.HR{
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+    width: 70%;
+}
+
+.HR_admin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+    width: 70%
+}
