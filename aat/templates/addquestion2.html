@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block header %}New Question{% endblock %}
+
+{% block content %}
+<div class="new_question_page">
+    <div class="errors">
+        {% if addquestion2form.errors.items() %}
+            {% for field, errors in addquestion2form.errors.items() %}
+                <small>
+                    {{ " ".join(errors) }}
+                </small>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+
+    <div class="new_question">
+        <form action="" method='POST'>
+        {{ addquestion2form.csrf_token }}
+
+            <p class="course">{{ addquestion2form.course.label }} {{ addquestion2form.course }}</p>
+            <p class="difficulty">{{ addquestion2form.difficulty.label }} {{ addquestion2form.difficulty}}</p>
+            <p class="point">{{ addquestion2form.point.label }} {{ addquestion2form.point}}</p>
+            <p class="tags">{{ addquestion2form.tags.label }} {{ addquestion2form.tags}}</p>
+            <p class="questionTitle">{{ addquestion2form.title.label }} {{ addquestion2form.title(cols = 48, rows = 3)}}</p>
+            <p class="question2Answer">{{ addquestion2form.correct_answer.label }} {{ addquestion2form.correct_answer}}</p>
+            <p class="questionExplanation">{{ addquestion2form.explanation.label }} {{ addquestion2form.explanation(cols = 50, rows = 10)}}</p>
+
+            <div class="add_question_page_btn">
+                <p>
+                    <button onclick="history.back()">Back</button>
+                    <input type="submit" name="Save and Exit" value="Save and Exit">
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
