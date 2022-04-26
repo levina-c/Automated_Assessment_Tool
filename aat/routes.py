@@ -400,7 +400,7 @@ def previewassessment(currentAssessmentID):
         return redirect(url_for('assessment'))
     elif request.form.get("preview") == 'Edit Assessment':
         if assessment.status == 'Published':
-            flash('Published assessment cannot be edited. Please contact admin for assisstance.')
+            flash('Published assessment cannot be edited. Please contact admin for assistance.')
         else:
             return redirect(url_for('indiassessment', assessmentID=assessment.id))
     elif request.form.get("preview") == 'Publish':
