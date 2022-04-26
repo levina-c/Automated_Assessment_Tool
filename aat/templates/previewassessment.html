@@ -3,12 +3,18 @@
 {% block content %}
 <div class="preview_page">
     <div class="currentAssessmentInfo_preview">
-        <h5>Course: {{ assessment.course_code }}</h5>
+        <h5>Course: {{ assessment.course_code }} {{ coursename }}</h5>
         <h5>Assessment Title: {{ assessment.assessmenttitle }}</h5>
         <h5>Assessment Type: {{ assessment.assessmenttype }}</h5>
         <h5>Due Date and Time : {{ assessment.duedate }} {{ assessment.duedatetime }} </h5>
-        <h5>Time Limit: {{ assessment.timelimit }}</h5>
+        <h5>Time Limit: {{ assessment.timelimit }} mins</h5>
         <h5>Total Mark: {{ assessment.totalmark }}</h5>
+        {% if marks == assessment.totalmark %}
+        <h5 class="AddedUp">Current Marks: {{ marks }}</h5>
+        {% else %}
+        <h5 class="notAddedUp">Current Marks: {{ marks }}</h5>
+        {% endif %}
+        <h5>No. of Questions: {{ noOfQuestions }}</h5>
         {% if assessment.retake == True %}
         <h5>Student Retake: Yes </h5>
         {% else %}
@@ -28,13 +34,15 @@
                     {% if q.optionD != null %}
                         <p>D: {{ q.optionD }}</p>
                     {% endif %}
+                    <p>Point: {{ q.point }}</p>
                 </li>
                 {% endfor %}
                 {% for q in assessmentT2Qs %}
                 <li>
                     <h4>{{ q.title }}</h4>
-                    <p>True</p>
-                    <p>False</p>
+                    <p> True</p>
+                    <p> False</p>
+                    <p>Point: {{ q.point }}</p>
                 </li>
                 {% endfor %}
             </ol>
@@ -43,9 +51,12 @@
             <form method="POST" action="">
                 <input type='submit' name="preview" value='Back'>
                 <input type='submit' name="preview" value='Edit Assessment'>
+                <input type='submit' name="preview" value='Delete Assessment'>
+                {% if assessment.status == 'Draft' %}
                 <input type='submit' name="preview" value='Add Questions'>
-                <input type='submit' name="preview" value='Save as draft'>
+                <input type='submit' name="preview" value='Save'>
                 <input type='submit' name="preview" value='Publish'>
+                {% endif %}
             </form>
         </div>
     </div>

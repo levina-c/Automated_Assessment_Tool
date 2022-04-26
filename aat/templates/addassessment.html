@@ -6,14 +6,14 @@
         {% if addassessmentform.errors.items() %}
             {% for field, errors in addassessmentform.errors.items() %}
                 <small>
-                    {{ " ".join(errors) }}
+                    <p>{{ " ".join(errors) }}</p>
                 </small>
             {% endfor %}
         {% endif %}
     </div>
 
     <div class="new_assessment"></div>
-        <form action="" method='POST'>
+        <form action="" method='POST' novalidate>
             {{ addassessmentform.csrf_token }}
             
                 <p class="course">{{ addassessmentform.course.label }} {{ addassessmentform.course }}</p>
@@ -21,7 +21,7 @@
                 <p class="assessmentType">{{ addassessmentform.assessmenttype.label }} {{ addassessmentform.assessmenttype}}</p>
                 <p class="dueDate">{{ addassessmentform.duedate.label }} {{ addassessmentform.duedate(class='datepicker')}} {{ addassessmentform.hidden_tag()}}</p>
                 <p class="dueDateTime">{{ addassessmentform.duedatetime.label }} {{ addassessmentform.duedatetime}} {{ addassessmentform.hidden_tag()}}</p>
-                <p class="timeLimit">{{ addassessmentform.timelimit.label }} {{ addassessmentform.timelimit}}</p>
+                <p class="timeLimit">{{ addassessmentform.timelimit.label }} {{ addassessmentform.timelimit}} mins</p>
                 <p class="totalMark">{{ addassessmentform.totalmark.label }} {{ addassessmentform.totalmark}}</p>
                 <p class="retake">{{ addassessmentform.retake.label }} {{ addassessmentform.retake}}</p>
             

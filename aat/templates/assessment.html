@@ -14,6 +14,13 @@
             </form>
         </div>
     </div>
+    <div class="sortassessment">
+        <form method="POST" action="">
+            {{ sortassessment.csrf_token }}
+            <p>{{ sortassessment.sorttype }} {{ sortassessment.sort }}</p>
+        </form>
+    </div>
+    {% if sortBy == 'Status'%}
     <div class="assessmentlist">
         {% for assessment in allassessments %}
             {% if assessment.status == 'Published' %}
@@ -22,22 +29,24 @@
                     <table>
                         <th>Course</th>
                         <th>Title</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Due Date</th>
             {% break %}
             {% endif %}
         {% endfor %}
-            {% for assessment in allassessments %}
-                {% if assessment.status == 'Published' %}
-                        <tr>
-                            <td>{{ assessment.course_code }}</td>
-                            <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
-                            <td>{{ assessment.status }}</td>
-                            <td>{{ assessment.duedate }}</td>
-                            <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
-                        </tr>
-                {% endif %}
-            {% endfor %}
+        {% for assessment in allassessments %}
+            {% if assessment.status == 'Published' %}
+                    <tr>
+                        <td>{{ assessment.course_code }}</td>
+                        <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                        <td>{{ assessment.assessmenttype }}</td>
+                        <td>{{ assessment.status }}</td>
+                        <td>{{ assessment.duedate }}</td>
+                        <td><a href="previewassessment/{{ assessment.id }}">View</a></td>
+                    </tr>
+            {% endif %}
+        {% endfor %}
                     </table>
                 </div>
         {% for assessment in allassessments %}
@@ -47,6 +56,7 @@
                     <table>
                         <th>Course</th>
                         <th>Title</th>
+                        <th>Type</th>
                         <th>Status</th>
                         <th>Due Date</th>
             {% break %}
@@ -56,14 +66,45 @@
             {% if assessment.status == 'Draft' %}
                 <tr>
                     <td>{{ assessment.course_code }}</td>
-                    <td><a href="indiassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                    <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                    <td>{{ assessment.assessmenttype }}</td>
                     <td>{{ assessment.status }}</td>
                     <td>{{ assessment.duedate }}</td>
+                    <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
                 </tr>
             {% endif %}
         {% endfor %}
             </table>
         </div>
     </div>
+    {% else %}
+    <div class="assessmentlist">
+        {% for course in allcourses %}
+            {% for assessment in allassessments %}
+                {% if assessment.course_code == course.courseCode%}
+                    <div id='course'>
+                        <h5>{{ course.courseCode }} {{ course.courseName }}</h5>
+                        <table>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                            <tr>
+                                <td><a href="previewassessment/{{ assessment.id }}">{{ assessment.assessmenttitle }}</a></td>
+                                <td>{{ assessment.assessmenttype }}</td>
+                                <td>{{ assessment.status }}</td>
+                                <td>{{ assessment.duedate }}</td>
+                                {% if assessment.status == 'Draft' %}
+                                <td><a href="indiassessment/{{ assessment.id }}">Edit</a></td>
+                                {% else %}
+                                <td><a href="previewassessment/{{ assessment.id }}">View</a></td>
+                                {% endif %}
+                            </tr>
+                        </table>
+                {% endif %}
+            {% endfor %}
+        {% endfor %} 
+    </div>
+    {% endif %}
 </div>
 {% endblock content %}

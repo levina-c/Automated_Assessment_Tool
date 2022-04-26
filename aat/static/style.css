@@ -125,8 +125,10 @@ hr{
     width: 50%;
 }
 
+.errors,
 .flashedmsg {
-    font-size: 15px;
+    font-size: 18px;
+    /* width:50%; */
 }
 
 /* assessment page */
@@ -156,15 +158,17 @@ hr{
 }
 
 #published,
-#draft {
+#draft,
+#course {
     display: flex;
-    width: 70%;
+    width: 100%;
     flex-direction: column;
     justify-content: center;
 }
 
 #published h5,
-#draft h5 {
+#draft h5,
+#course h5 {
     font-size: 20px;
     margin-bottom: -5px;
     background-color: rgb(59, 59, 59);
@@ -211,6 +215,10 @@ table {
     /* width: 70%; */
     font-size: 20px;
     line-height: 0px;
+}
+
+.notAddedUp {
+    color: red;
 }
 
 .currentAssessmentInfo {
@@ -306,4 +314,80 @@ table {
 .questions{
     width:90%;
     padding-bottom: 20px;
+}
+
+.HR{
+    display: inline-block;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+    width: 70%;
+}
+
+.HR_admin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+    width: 70%
+}
+
+/* question pool page */
+.question_pool_page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.question_pool_page_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 150px;
+}
+
+.questionlist {
+    display: flex;
+    flex-direction: column;
+    /* margin:auto; */
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width:80%;
+}
+
+/* add question page */
+.new_question_page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+}
+
+.add_question_page_btn {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 150px;
+}
+
+/* edit question page */
+.edit_question_page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin:auto;
+}
+
+
+.edit_question_btn {
+    display: flex;
+    align-self: flex-end;
+    align-content: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    gap: 20px;
 }

@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block header %}<h1>Manage Multiple Choice Questions</h1>{% endblock %}
+{% block content %}
+
+<p>This is the admin page for managing MCQs. </p>
+
+<div class="MCQs">
+
+    {% for post in posts %}
+
+        <u><p id='PostID'> Post number: {{ post.id }} </p></u>
+        <p id='Title'> Question: {{ post.title }} </p>
+
+        <p id='Option A'> Option A: {{ post.optionA }} </p>
+        <p id='Option B'> Option B: {{ post.optionB }} </p>
+        <p id='Option C'> Option C: {{ post.optionC }} </p>
+        <p id='Option D'> Option D: {{ post.optionD }} </p>
+        <p id='Correct answer'> Correct answer: {{ post.correct_answer }} </p>
+        <p id='Tags'> Tags: {{ post.tags }} </p>
+        <p id='Explanation'> Explanation: {{ post.explanation }} </p>
+        <p id='Difficulty'> Difficulty: {{ post.difficulty }} </p>
+        <p id='Points'> Points: {{ post.point }} </p>
+        <p id='Utilised'> Utilised: {{ post.utilised }} </p>
+
+        <a href="{{ url_for('MCQ_delete', post_id=post.id) }}">Delete</a>
+
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

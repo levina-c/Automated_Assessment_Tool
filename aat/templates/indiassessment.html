@@ -13,6 +13,11 @@
                 <p class="dueDateTime">{{ edit_assessment.duedatetime.label }} {{ edit_assessment.duedatetime }} {{ edit_assessment.hidden_tag()}}</p>
                 <p class="timeLimit">{{ edit_assessment.timelimit.label }} {{ edit_assessment.timelimit(value=assessment.timelimit)}}</p>
                 <p class="totalMark">{{ edit_assessment.totalmark.label }} {{ edit_assessment.totalmark(value=assessment.totalmark)}}</p>
+                {% if marks < assessment.totalmark or marks > assessment.totalmark %}
+                <p class="notAddedUp">Current Marks: {{ marks }}</p>
+                {% else %}
+                <p class="AddedUp">Current Marks: {{ marks }}</p>
+                {% endif %}
                 <p class="Retake">{{ edit_assessment.retake.label }} {{ edit_assessment.retake}}</p>
                 <input type="submit" name='Save_d' value='Save'>
             </form>
@@ -25,18 +30,20 @@
             <div class="question_in_assessment">
                 <ol>
                     {% if delete_question.t1opts %}
-                    {% for title in assessmentT1Qs %}
                     {% for q in delete_question.t1opts %}
-                    <li>{{title}} {{ q }}</li>
+                    {% for value, label in delete_question.t1opts.choices %}
+                    <li>{{ q }} {{ label }}</li>
                     {% endfor %}
+                    {% break %}
                     {% endfor %}
                     {% endif %}
                     
                     {% if delete_question.t2opts %}
-                    {% for title in assessmentT2Qs %}
                     {% for q in delete_question.t2opts %}
-                    <li>{{title}} {{ q }}</li>
+                    {% for value, label in delete_question.t2opts.choices %}
+                    <li>{{ q }} {{ label }}</li>
                     {% endfor %}
+                    {% break %}
                     {% endfor %}
                     {% endif %}
                 </ol>

@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block header %}<h1>Add Multiple Choice Question</h1>{% endblock %}
+{% block content %}
+
+<form action="" method='POST'>
+    {{ mcqform.csrf_token }}
+    <div class="add_mcq">
+        <p class="title">{{ mcqform.title.label }} {{ mcqform.title }}</p>
+        <p class="assessment_id">{{ mcqform.assessment_id.label }} {{ mcqform.assessment_id}}</p>
+        <p class="course_code">{{ mcqform.coursecode.label }} {{ mcqform.coursecode}}</p>
+        <p class="optionA">{{ mcqform.optionA.label }} {{ mcqform.optionA }}</p>
+        <p class="optionB">{{ mcqform.optionB.label }} {{ mcqform.optionB }}</p>
+        <p class="optionC">{{ mcqform.optionC.label }} {{ mcqform.optionC }}</p>
+        <p class="optionD">{{ mcqform.optionD.label }} {{ mcqform.optionD }}</p>
+        <p class="correct_answer">{{ mcqform.correct_answer.label }} {{ mcqform.correct_answer}}</p>
+        <p class="explanation">{{ mcqform.explanation.label }} {{ mcqform.explanation}}</p>
+        <p class="tags">{{ mcqform.tags.label }} {{ mcqform.tags}}</p>
+        <p class="points">{{ mcqform.point.label }} {{ mcqform.point}}</p>
+        <p class="difficulty">{{ mcqform.difficulty.label }} {{ mcqform.difficulty}}</p>
+        <p class="utilised">{{ mcqform.utilised.label }} {{ mcqform.utilised}}</p>
+
+    <p>
+        {{ mcqform.submit }}
+    </p>
+
+    <a href="{{ url_for('HR_admin')}}">Manage multiple choice questions</a>
+
+    </div>
+
+</form>
+
+{% endblock %}

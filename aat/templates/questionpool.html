@@ -1,1 +1,47 @@
-dsafsd
+{% extends 'layout.html' %}
+{% block header %}Question Pool{% endblock %}
+{% block content %}
+<div class="question_pool_page">
+    <div class="question_pool_page_btn">
+
+
+        <form method="POST" action="">
+            <!-- <select name="questiontype">
+                <option value="Multiple Choice">Multiple Choice</option>
+                <option value="True/False">True/False</option>
+            </select> -->
+            <input type="submit" name="multipleChoice" value="Multiple Choice">
+            <input type="submit" name="trueFalse" value="True/False">
+            
+    </div>
+    <div class="questionlist">
+        <div id='published'>
+            <h5>Published</h5>
+            <table>
+                <th>Course</th>
+                <th>Title</th>
+
+        
+            {% for question in questions %}
+                <tr>
+                    <td>
+                        {{ question.course_code }}
+                    </td>
+                    <td>
+                        <a href="question/edit/{{ question.id }}">{{ question.title }}</a>
+                    </td>
+                    <td>
+                        <a href="question/edit/{{ question.id }}">Edit</a>
+                    </td>
+                </tr>
+        
+
+            {% endfor %}
+            </table>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

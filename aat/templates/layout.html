@@ -31,6 +31,10 @@
                             <img src="{{ url_for('static', filename='img/course.png') }}">
                             <a href="{{ url_for('course') }}">Course</a>
                         </div>
+                        <div>
+                            <img src="{{ url_for('static', filename='img/question.png') }}">
+                            <a href="{{ url_for('question') }}">Questions</a>
+                        </div>
                         <div class="assessment">
                             <img src="{{ url_for('static', filename='img/assessment.png') }}">
                             <a href="{{ url_for('assessment') }}">Assessment</a>
@@ -52,11 +56,11 @@
                 <div class="flashedmsg">
                     {% with messages = get_flashed_messages() %}
                         {% if messages %}
-                            <ul class=flashes>
+                            <small class=flashes>
                                 {% for message in messages %}
-                                <li>{{ message }}</li>
+                                <p>{{ message }}</p>
                                 {% endfor %}
-                            </ul>
+                            </small>
                         {% endif %}
                     {% endwith %}
                 </div>
