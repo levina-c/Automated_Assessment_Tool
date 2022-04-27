@@ -125,6 +125,10 @@ hr{
     width: 50%;
 }
 
+.flashedmsg{
+    width:60%;
+}
+
 .errors,
 .flashedmsg {
     font-size: 18px;
