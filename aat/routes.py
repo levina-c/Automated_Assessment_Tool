@@ -535,7 +535,6 @@ def addquestion2():
 
 
 
-
 @app.route("/question/edit/<int:questionID>", methods=['GET' , 'POST'])
 def editquestion(questionID):
     question = Type2Questions.query.get_or_404(questionID)
@@ -575,3 +574,7 @@ def editquestion(questionID):
 
 
     return render_template("editquestion.html", edit_question = edit_question, question = question)
+
+@app.route("/comment", methods=['GET' , 'POST'])
+def comment():
+    return render_template("comment.html")
