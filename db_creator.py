@@ -15,7 +15,7 @@ assessment1 = Assessments(
     assessmenttype = "Test",
     duedate = '01/05/2022',
     duedatetime = '09:30',
-    totalmark = 100,
+    totalmark = 20,
     retake = False,
     status = 'Published'
     )

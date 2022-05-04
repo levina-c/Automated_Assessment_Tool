@@ -351,12 +351,12 @@ def addassessmentquestion(currentAssessmentID):
     elif request.form.get("add_question") == "Edit Assessment":
         return redirect(url_for('indiassessment', assessmentID = currentAssessmentID))
     elif request.form.get("add_question") == "Save":
-        if marks<assessment.totalmark:
-            flash(f'Total mark in {assessment.assessmenttitle} don\'t add up!')
+        if marks==assessment.totalmark:
             flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
             assessment.status = 'Draft'
             db.session.commit()
         else:
+            flash(f'Total mark in {assessment.assessmenttitle} don\'t add up!')
             flash(f"{assessment.course_code} {assessment.assessmenttitle} has been saved as draft")
             assessment.status = 'Draft'
             db.session.commit()
@@ -368,12 +368,15 @@ def addassessmentquestion(currentAssessmentID):
     elif request.form.get("add_question") == "Publish":
         if marks<assessment.totalmark:
             flash(f'{assessment.totalmark - marks} marks left to reach assigned assessment total mark')
-        else:
+        elif marks==assessment.totalmark:
             flash(f"{assessment.course_code} {assessment.assessmenttitle}  has been published")
             assessment.status = 'Published'
             db.session.commit()
-        # flash(f"{assessment.course_code} {assessment.assessmenttitle} has been published")
             return redirect(url_for('assessment'))
+        else:
+            flash(f'{marks - assessment.totalmark } marks over assigned assessment total mark')
+        # flash(f"{assessment.course_code} {assessment.assessmenttitle} has been published")
+            
 
     return render_template("addassessmentquestion.html", assessment=assessment, filterform=filterform, selectquestions=selectquestions, typeofQs=typeofQs, marks=marks, coursename=coursename, noOfQuestions=noOfQuestions)
 
