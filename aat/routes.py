@@ -578,10 +578,6 @@ def editquestion(questionID):
 
     return render_template("editquestion.html", edit_question = edit_question, question = question)
 
-<<<<<<< HEAD
-@app.route("/comment", methods=['GET' , 'POST'])
-=======
 @app.route("/comment", methods=['GET','POST'])
->>>>>>> python
 def comment():
     return render_template("comment.html")
